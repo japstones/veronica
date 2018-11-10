@@ -13,7 +13,7 @@ import com.rolandopalermo.facturacion.ec.modelo.ComprobanteElectronico;
 
 public class ArchivoUtil {
 
-	public static byte[] convertirJSONAXML(ComprobanteElectronico doc) throws Exception {
+	public static byte[] convertirObjAXML(ComprobanteElectronico doc) throws Exception {
 		String nombreArchivo = doc.getInfoTributaria().getClaveAcceso() + UUID.randomUUID().toString();
 		File temp = File.createTempFile(nombreArchivo, ".xml");
 		nombreArchivo = temp.getAbsolutePath();

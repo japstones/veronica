@@ -55,6 +55,11 @@
 			<version>2.7.0</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.rolandopalermo.facturacion.ec</groupId>
+			<artifactId>veronica-ride</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

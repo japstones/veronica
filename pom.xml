@@ -34,6 +34,7 @@
 		<module>veronica-soap</module>
 		<module>veronica-dto</module>
 		<module>veronica-bo</module>
+		<module>veronica-ride</module>
 	</modules>
 	<dependencies>
 		<dependency>

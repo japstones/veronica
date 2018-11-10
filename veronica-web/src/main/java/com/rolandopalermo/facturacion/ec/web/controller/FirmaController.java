@@ -1,6 +1,9 @@
 package com.rolandopalermo.facturacion.ec.web.controller;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibm.icu.math.BigDecimal;
 import com.rolandopalermo.facturacion.ec.bo.FirmadorBO;
 import com.rolandopalermo.facturacion.ec.common.exception.BadRequestException;
 import com.rolandopalermo.facturacion.ec.common.exception.InternalServerException;
@@ -44,14 +48,12 @@ public class FirmaController {
 	@ApiOperation(value = "Firma un comprobante electrónico")
 	@PostMapping(value = "/comprobante-electronico", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<byte[]>> firmarComprobanteElectronico(
-			@ApiParam(value = "Comprobante electrónico codificado como base64", required = true) 
-			@RequestBody FirmadorRequestDTO request) {
+			@ApiParam(value = "Comprobante electrónico codificado como base64", required = true) @RequestBody FirmadorRequestDTO request) {
 		if (!new File(rutaArchivoPkcs12).exists()) {
 			throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
 		}
 		try {
-			byte[] content = firmadorBO.firmarComprobanteElectronico(request.getContenido(), rutaArchivoPkcs12,
-					claveArchivopkcs12);
+			byte[] content = firmadorBO.firmarComprobanteElectronico(request.getContenido(), rutaArchivoPkcs12, claveArchivopkcs12);
 			return new ResponseEntity<GenericResponse<byte[]>>(new GenericResponse<byte[]>(content), HttpStatus.OK);
 		} catch (NegocioException e) {
 			logger.error("firmarComprobanteElectronico", e);

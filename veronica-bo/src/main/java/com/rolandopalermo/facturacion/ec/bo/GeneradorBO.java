@@ -14,7 +14,7 @@ public class GeneradorBO {
 	
 	public byte[] generarXMLDocumentoElectronico(ComprobanteElectronico documento) throws NegocioException {
 		try {
-			return ArchivoUtil.convertirJSONAXML(documento);
+			return ArchivoUtil.convertirObjAXML(documento);
 		} catch (Exception e) {
 			logger.error("generarXMLDocumentoElectronico", e);
 			throw new NegocioException("Ocurrió un error al generar el comprobante electrónico.");
