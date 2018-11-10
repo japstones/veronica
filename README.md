@@ -68,6 +68,7 @@ http://localhost:8080/veronica/swagger-ui.html
 - V1: 2018-04-12, first draft.
 - V2: 2018-04-27, enable maven profiles.
 - V3: 2018-04-28, enable swagger2 for api documentation.
+- V4: 2018-11-10, Invoice RIDE generation.
 
 ## Authors
 
