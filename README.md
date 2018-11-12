@@ -7,7 +7,7 @@
 </p>
 <h4 align="center">E-Invoicing Rest API for the integration with "Servicio de Rentas Internas" Web services.</h4>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/rolandopalermo/veronica/master/static/api-doc.jpg" alt="Veronica API">
+  <img src="https://raw.githubusercontent.com/rolandopalermo/veronica/master/static/api-doc.jpg" alt="Veronica API" width="800">
 </p>
 </h1>
 
