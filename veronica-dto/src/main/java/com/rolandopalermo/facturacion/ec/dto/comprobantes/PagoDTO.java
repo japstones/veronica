@@ -1,20 +1,20 @@
-package com.rolandopalermo.facturacion.ec.modelo.factura;
+package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-@XmlType(propOrder = {
+@JsonPropertyOrder({
         "formaPago",
         "total",
         "plazo",
         "unidadTiempo"
 })
-public class Pago {
+public class PagoDTO {
 
     private String formaPago;
     private BigDecimal total;

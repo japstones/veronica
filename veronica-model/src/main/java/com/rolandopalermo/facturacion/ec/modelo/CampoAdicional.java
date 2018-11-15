@@ -4,35 +4,30 @@
  */
 package com.rolandopalermo.facturacion.ec.modelo;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
 /**
- *
  * @author Rolando
  */
 @Getter
 @Setter
 public class CampoAdicional {
 
-	@NotEmpty
-	protected String value;
-	@NotEmpty
-	protected String nombre;
+    private String value;
+    private String nombre;
 
-	@XmlAttribute(name = "nombre")
-	public String getNombre() {
-		return nombre;
-	}
+    @XmlAttribute(name = "nombre")
+    public String getNombre() {
+        return nombre;
+    }
 
-	@XmlValue
-	public String getValue() {
-		return value;
-	}
+    @XmlValue
+    public String getValue() {
+        return value;
+    }
 
 }

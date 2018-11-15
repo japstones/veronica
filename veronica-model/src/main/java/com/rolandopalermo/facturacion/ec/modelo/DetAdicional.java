@@ -4,34 +4,29 @@
  */
 package com.rolandopalermo.facturacion.ec.modelo;
 
-import javax.xml.bind.annotation.XmlAttribute;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 /**
- *
  * @author Rolando
  */
 @Getter
 @Setter
 public class DetAdicional {
 
-	@NotEmpty
-	protected String nombre;
-	@NotEmpty
-	protected String valor;
+    private String nombre;
+    private String valor;
 
-	@XmlAttribute(name = "nombre")
-	public String getNombre() {
-		return nombre;
-	}
+    @XmlAttribute(name = "nombre")
+    public String getNombre() {
+        return nombre;
+    }
 
-	@XmlAttribute(name = "valor")
-	public String getValor() {
-		return valor;
-	}
+    @XmlAttribute(name = "valor")
+    public String getValor() {
+        return valor;
+    }
 
 }

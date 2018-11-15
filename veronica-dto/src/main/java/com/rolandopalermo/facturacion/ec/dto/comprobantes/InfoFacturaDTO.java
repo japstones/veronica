@@ -1,24 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.rolandopalermo.facturacion.ec.modelo.factura;
+package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Singular;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * @author Rolando
- */
 @Getter
 @Setter
-@XmlType(propOrder = {
+@JsonPropertyOrder({
         "fechaEmision",
         "dirEstablecimiento",
         "contribuyenteEspecial",
@@ -38,37 +32,35 @@ import java.util.List;
         "valorRetIva",
         "valorRetRenta"
 })
-public class InfoFactura {
+public class InfoFacturaDTO {
 
+    @NotEmpty
     private String fechaEmision;
+    @NotEmpty
     private String dirEstablecimiento;
     private String contribuyenteEspecial;
     private String obligadoContabilidad;
+    @NotEmpty
     private String tipoIdentificacionComprador;
     private String guiaRemision;
+    @NotEmpty
     private String razonSocialComprador;
     private String identificacionComprador;
     private String direccionComprador;
+    @NotNull
     private BigDecimal totalSinImpuestos;
     private BigDecimal totalDescuento;
-    @Singular("totalImpuesto")
-    private List<TotalImpuesto> totalImpuesto;
+    @NotEmpty
+    @Valid
+    private List<TotalImpuestoDTO> totalImpuesto;
     private BigDecimal propina;
+    @NotNull
     private BigDecimal importeTotal;
     private String moneda;
-    @Singular("pagos")
-    private List<Pago> pagos;
+    @NotEmpty
+    @Valid
+    private List<PagoDTO> pagos;
     private BigDecimal valorRetIva;
     private BigDecimal valorRetRenta;
-
-    @XmlElementWrapper(name = "totalConImpuestos")
-    public List<TotalImpuesto> getTotalImpuesto() {
-        return totalImpuesto;
-    }
-
-    @XmlElementWrapper(name = "pagos")
-    public List<Pago> getPagos() {
-        return pagos;
-    }
 
 }

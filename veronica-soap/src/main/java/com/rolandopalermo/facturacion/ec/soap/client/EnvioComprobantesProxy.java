@@ -1,5 +1,6 @@
 package com.rolandopalermo.facturacion.ec.soap.client;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
@@ -13,14 +14,14 @@ public class EnvioComprobantesProxy {
 	private RecepcionComprobantesOffline port;
 	private static RecepcionComprobantesOfflineService service;
 
-	public EnvioComprobantesProxy(String wsdlLocation) throws Exception {
+	public EnvioComprobantesProxy(String wsdlLocation) throws MalformedURLException {
 		URL url = new URL(wsdlLocation);
 		QName qname = new QName("http://ec.gob.sri.ws.recepcion", "RecepcionComprobantesOfflineService");
 		service = new RecepcionComprobantesOfflineService(url, qname);
 		port = service.getRecepcionComprobantesOfflinePort();
 	}
 
-	public RespuestaSolicitud enviarComprobante(byte[] archivoBytes) throws Exception {
+	public RespuestaSolicitud enviarComprobante(byte[] archivoBytes) {
 		RespuestaSolicitud response = null;
 		if (archivoBytes != null) {
 			response = port.validarComprobante(archivoBytes);

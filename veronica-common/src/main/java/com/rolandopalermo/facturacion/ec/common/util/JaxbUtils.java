@@ -1,22 +1,29 @@
 package com.rolandopalermo.facturacion.ec.common.util;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 /**
  *
  * @author Rolando
  */
-public class MarshallerUtil {
+public class JaxbUtils {
 
-	public static void marshall(Object comprobante, String rutaArchivo) throws Exception {
+	/**
+	 * Utility classes should not have a public constructor.
+	 */
+	private JaxbUtils() {
+	}
+
+	public static void marshall(Object comprobante, String rutaArchivo) throws JAXBException, IOException {
 		JAXBContext context = JAXBContext.newInstance(new Class[] { comprobante.getClass() });
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty("jaxb.encoding", "UTF-8");
@@ -28,7 +35,7 @@ public class MarshallerUtil {
 		out.close();
 	}
 
-	public static <T> T unmarshall(String string, Class<T> clase) throws Exception {
+	public static <T> T unmarshall(String string, Class<T> clase) throws JAXBException {
 		JAXBContext jaxbContext = null;
 		Unmarshaller unmarshaller = null;
 		StringReader reader = null;
@@ -40,7 +47,7 @@ public class MarshallerUtil {
 		return comprobante;
 	}
 
-	public static <T> T unmarshall(File file, Class<T> clase) throws Exception {
+	public static <T> T unmarshall(File file, Class<T> clase) throws JAXBException {
 		JAXBContext jaxbContext = null;
 		Unmarshaller unmarshaller = null;
 		jaxbContext = JAXBContext.newInstance(clase);
@@ -50,7 +57,4 @@ public class MarshallerUtil {
 		return comprobante;
 	}
 
-	public static String getXMLValue(String xml, String tagName) {
-		return xml.split("<" + tagName + ">")[1].split("</" + tagName + ">")[0];
-	}
 }

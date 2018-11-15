@@ -2,6 +2,12 @@ package com.rolandopalermo.facturacion.ec.common.sri;
 
 public class TipoAmbiente {
 
+	/**
+	 * Utility classes should not have a public constructor.
+	 */
+	private TipoAmbiente() {
+	}
+
 	public static TipoAmbiente[] values() {
 		return (TipoAmbiente[]) $VALUES.clone();
 	}

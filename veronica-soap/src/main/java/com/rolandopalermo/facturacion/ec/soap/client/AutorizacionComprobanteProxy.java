@@ -1,5 +1,6 @@
 package com.rolandopalermo.facturacion.ec.soap.client;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
@@ -14,7 +15,7 @@ public class AutorizacionComprobanteProxy {
 	private AutorizacionComprobantesOfflineService service;
 	private AutorizacionComprobantesOffline port;
 
-	public AutorizacionComprobanteProxy(String wsdlLocation) throws Exception {
+	public AutorizacionComprobanteProxy(String wsdlLocation) throws MalformedURLException {
 		service = new AutorizacionComprobantesOfflineService(new URL(wsdlLocation),
 				new QName("http://ec.gob.sri.ws.autorizacion", "AutorizacionComprobantesOfflineService"));
 		port = service.getAutorizacionComprobantesOfflinePort();

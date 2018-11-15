@@ -1,4 +1,4 @@
-package com.rolandopalermo.facturacion.ec.dto;
+package com.rolandopalermo.facturacion.ec.dto.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GenericResponse<T> {
+public class ByteArrayResponseDTO {
 
-	private T contenido;
+    private byte[] content;
 
 }

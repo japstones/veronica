@@ -4,6 +4,12 @@ import java.util.HashMap;
 
 public class Constantes {
 
+	/**
+	 * Utility classes should not have a public constructor.
+	 */
+	private Constantes() {
+	}
+
 	public static final String API_DOC_ANEXO_1 = "Ver ficha técnica - Anexo 1";
 
 	@SuppressWarnings("serial")

@@ -19,6 +19,7 @@ Table of contents
 	- [Startup Settings](#startup-settings)
 	- [Deployment](#deployment)
 	- [Documentation](#documentation)
+	- [Postman API Reference](#postman-api-reference)
 	- [Documentation history](#documentation-history)
 	- [Authors](#authors)
 
@@ -62,6 +63,9 @@ $ mvn spring-boot:run
 
 ## Documentation
 http://localhost:8080/veronica/swagger-ui.html
+
+## Postman API Reference
+https://documenter.getpostman.com/view/1388083/RzZCDHct
 
 ## Documentation history
 

@@ -1,5 +1,8 @@
 package com.rolandopalermo.facturacion.ec.common.util;
 
+import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
+
+import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,22 +12,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-import com.rolandopalermo.facturacion.ec.modelo.ComprobanteElectronico;
+public class FileUtils {
 
-public class ArchivoUtil {
+	/**
+	 * Utility classes should not have a public constructor.
+	 */
+	private FileUtils() {
+	}
 
-	public static byte[] convertirObjAXML(ComprobanteElectronico doc) throws Exception {
-		String nombreArchivo = doc.getInfoTributaria().getClaveAcceso() + UUID.randomUUID().toString();
-		File temp = File.createTempFile(nombreArchivo, ".xml");
-		nombreArchivo = temp.getAbsolutePath();
-		MarshallerUtil.marshall(doc, nombreArchivo);
+	public static byte[] convertirObjAXML(Object doc) throws VeronicaException, IOException, JAXBException {
+		File temp = File.createTempFile(UUID.randomUUID().toString(), ".xml");
+		String nombreArchivo = temp.getAbsolutePath();
+		JaxbUtils.marshall(doc, nombreArchivo);
 		Path path = Paths.get(nombreArchivo);
 		byte[] data = Files.readAllBytes(path);
 		if (!temp.delete()) {
-			throw new Exception("No se pudo eliminar el archivo temporal.");
+			throw new VeronicaException("No se pudo eliminar el archivo temporal.");
 		}
 		return data;
-
 	}
 
 	public static byte[] convertirArchivoAByteArray(File file) throws IOException {

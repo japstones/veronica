@@ -9,6 +9,12 @@ import java.util.Date;
  */
 public class ClaveDeAcceso {
 
+	/**
+	 * Utility classes should not have a public constructor.
+	 */
+	private ClaveDeAcceso() {
+	}
+
 	public static String generarClaveAcceso(Date fechaEmision, String tipoComprobante, String ruc, String ambiente,
 			String serie, String numeroComprobante, String codigoNumerico, String tipoEmision) {
 		int verificador = 0;

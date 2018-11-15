@@ -4,21 +4,16 @@
  */
 package com.rolandopalermo.facturacion.ec.modelo.factura;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.rolandopalermo.facturacion.ec.modelo.DetAdicional;
 import com.rolandopalermo.facturacion.ec.modelo.Impuesto;
-
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
+
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -26,31 +21,38 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@XmlRootElement(name = "detalle")
-@XmlType(propOrder = { "codigoPrincipal", "codigoAuxiliar", "descripcion", "cantidad", "precioUnitario", "descuento",
-		"precioTotalSinImpuesto", "detAdicional", "impuesto" })
+@XmlType(propOrder = {
+		"codigoPrincipal",
+		"codigoAuxiliar",
+		"descripcion",
+		"cantidad",
+		"precioUnitario",
+		"descuento",
+		"precioTotalSinImpuesto",
+		"detAdicional",
+		"impuesto"
+})
 public class FacturaDetalle {
 
-	protected String codigoPrincipal;
-	protected String codigoAuxiliar;
-	@NotEmpty
-	protected String descripcion;
-	protected BigDecimal cantidad;
-	protected BigDecimal precioUnitario;
-	protected BigDecimal descuento;
-	protected BigDecimal precioTotalSinImpuesto;
-	private List<DetAdicional> detAdicional;
-	@NotEmpty
-	@Valid
-	private List<Impuesto> impuesto;
+	private String codigoPrincipal;
+	private String codigoAuxiliar;
+	private String descripcion;
+	private BigDecimal cantidad;
+	private BigDecimal precioUnitario;
+	private BigDecimal descuento;
+	private BigDecimal precioTotalSinImpuesto;
+	@Singular("detAdicional")
+	private List < DetAdicional > detAdicional;
+	@Singular("impuesto")
+	private List < Impuesto > impuesto;
 
 	@XmlElementWrapper(name = "detallesAdicionales")
-	public List<DetAdicional> getDetAdicional() {
+	public List < DetAdicional > getDetAdicional() {
 		return detAdicional;
 	}
 
 	@XmlElementWrapper(name = "impuestos")
-	public List<Impuesto> getImpuesto() {
+	public List < Impuesto > getImpuesto() {
 		return impuesto;
 	}
 

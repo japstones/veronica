@@ -10,11 +10,4 @@
 	<properties>
 		<filter.src>${basedir}/..</filter.src>
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.rolandopalermo.facturacion.ec</groupId>
-			<artifactId>veronica-common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
 </project>

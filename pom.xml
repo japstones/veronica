@@ -35,7 +35,8 @@
 		<module>veronica-dto</module>
 		<module>veronica-bo</module>
 		<module>veronica-ride</module>
-	</modules>
+        <module>veronica-mapper</module>
+    </modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

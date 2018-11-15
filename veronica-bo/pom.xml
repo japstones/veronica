@@ -13,11 +13,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.rolandopalermo.facturacion.ec</groupId>
-			<artifactId>veronica-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.rolandopalermo.facturacion.ec</groupId>
 			<artifactId>veronica-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -26,5 +21,15 @@
 			<artifactId>veronica-soap</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>com.rolandopalermo.facturacion.ec</groupId>
+			<artifactId>veronica-dto</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+        <dependency>
+            <groupId>com.rolandopalermo.facturacion.ec</groupId>
+            <artifactId>veronica-mapper</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
