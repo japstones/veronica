@@ -1,6 +1,5 @@
 package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,19 +7,18 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@JsonPropertyOrder({
-        "codigo",
-        "codigoPorcentaje",
-        "tarifa",
-        "baseImponible",
-        "valor"
-})
 public class ImpuestoDTO {
 
     private String codigo;
     private String codigoPorcentaje;
+    private String codigoRetencion;
     private BigDecimal tarifa;
     private BigDecimal baseImponible;
+    private BigDecimal porcentajeRetener;
+    private BigDecimal valorRetenido;
+    private String codDocSustento;
+    private String numDocSustento;
+    private String fechaEmisionDocSustento;
     private BigDecimal valor;
 
 }

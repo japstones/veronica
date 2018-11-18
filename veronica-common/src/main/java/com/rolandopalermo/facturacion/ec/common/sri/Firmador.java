@@ -1,5 +1,6 @@
 package com.rolandopalermo.facturacion.ec.common.sri;
 
+import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import org.w3c.dom.Document;
 
 import es.mityc.firmaJava.libreria.xades.DataToSign;
@@ -30,7 +31,7 @@ public class Firmador extends GenericXMLSignature {
 	}
 
 	@Override
-	protected DataToSign createDataToSign() throws Exception {
+	protected DataToSign createDataToSign() throws VeronicaException {
 		DataToSign dataToSign = new DataToSign();
 		dataToSign.setXadesFormat(EnumFormatoFirma.XAdES_BES);
 		dataToSign.setEsquema(XAdESSchemas.XAdES_132);
@@ -48,7 +49,7 @@ public class Firmador extends GenericXMLSignature {
 		return rutaDocumentoFirmado;
 	}
 
-	public void firmar() throws Exception {
+	public void firmar() throws VeronicaException {
 		execute();
 	}
 

@@ -4,6 +4,7 @@ import com.rolandopalermo.facturacion.ec.bo.GeneradorBO;
 import com.rolandopalermo.facturacion.ec.common.exception.InternalServerException;
 import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDTO;
+import com.rolandopalermo.facturacion.ec.dto.comprobantes.RetencionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.ByteArrayResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +44,20 @@ public class GeneracionController {
             ByteArrayResponseDTO response = new ByteArrayResponseDTO(content);
         } catch (VeronicaException | IOException | JAXBException e) {
             logger.error("generarFactura", e);
+            throw new InternalServerException(e.getMessage());
+        }
+        return new ResponseEntity<ByteArrayResponseDTO>(new ByteArrayResponseDTO(content), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Genera un comprobante de retención en formato XML")
+    @PostMapping(value = "/retencion", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ByteArrayResponseDTO> generarRetencion(@Valid @ApiParam(value = API_DOC_ANEXO_1, required = true) @RequestBody RetencionDTO request) {
+        byte[] content = new byte[0];
+        try {
+            content = generadorBO.generarXMLRetencion(request);
+            ByteArrayResponseDTO response = new ByteArrayResponseDTO(content);
+        } catch (VeronicaException | IOException | JAXBException e) {
+            logger.error("generarRetencion", e);
             throw new InternalServerException(e.getMessage());
         }
         return new ResponseEntity<ByteArrayResponseDTO>(new ByteArrayResponseDTO(content), HttpStatus.OK);

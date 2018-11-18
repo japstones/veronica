@@ -1,16 +1,13 @@
 package com.rolandopalermo.facturacion.ec.mapper;
 
-import com.rolandopalermo.facturacion.ec.dto.comprobantes.CampoAdicionalDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.DetAdicionalDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDetalleDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.ImpuestoDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.PagoDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.TotalImpuestoDTO;
-import com.rolandopalermo.facturacion.ec.modelo.CampoAdicional;
 import com.rolandopalermo.facturacion.ec.modelo.DetAdicional;
 import com.rolandopalermo.facturacion.ec.modelo.Impuesto;
-import com.rolandopalermo.facturacion.ec.modelo.InfoTributaria;
 import com.rolandopalermo.facturacion.ec.modelo.factura.Factura;
 import com.rolandopalermo.facturacion.ec.modelo.factura.FacturaDetalle;
 import com.rolandopalermo.facturacion.ec.modelo.factura.InfoFactura;
@@ -20,10 +17,15 @@ import com.rolandopalermo.facturacion.ec.modelo.factura.TotalImpuesto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FacturaDTOMapper extends AbstractDTOMapper<FacturaDTO, Factura> {
+public class FacturaMapper extends AbstractMapper<FacturaDTO, Factura> {
 
     public Factura toModel(FacturaDTO facturaDTO) {
         Factura factura = new Factura();
+        factura.setInfoTributaria(buildInfoTributaria(facturaDTO));
+        factura.setCampoAdicional(buildCamposAdicionales(facturaDTO));
+        factura.setId(facturaDTO.getId());
+        factura.setVersion(facturaDTO.getVersion());
+
         //Procesar lista de impuestos totales
         List<TotalImpuestoDTO> totalImpuestosDTO = facturaDTO.getInfoFactura().getTotalImpuesto();
         List<TotalImpuesto> totalImpuestos = totalImpuestosDTO.stream()
@@ -86,33 +88,6 @@ public class FacturaDTOMapper extends AbstractDTOMapper<FacturaDTO, Factura> {
                     return facturaDetalle;
                 })
                 .collect(Collectors.toList());
-        //Procesar detalles adicionales
-        List<CampoAdicionalDTO> infoAdicionalDTO = facturaDTO.getCampoAdicional();
-        List<CampoAdicional> infoAdicional = infoAdicionalDTO.stream()
-                .map(campoAdicionalDTO -> {
-                    CampoAdicional campoAdicional = new CampoAdicional();
-                    campoAdicional.setNombre(campoAdicionalDTO.getNombre());
-                    campoAdicional.setValue(campoAdicionalDTO.getValue());
-                    return campoAdicional;
-                })
-                .collect(Collectors.toList());
-        //Crear Factura Bean
-        factura.setId(facturaDTO.getId());
-        factura.setVersion(facturaDTO.getVersion());
-
-        InfoTributaria InfoTributaria = new InfoTributaria();
-        InfoTributaria.setAmbiente(facturaDTO.getInfoTributaria().getAmbiente());
-        InfoTributaria.setTipoEmision(facturaDTO.getInfoTributaria().getTipoEmision());
-        InfoTributaria.setRazonSocial(facturaDTO.getInfoTributaria().getRazonSocial());
-        InfoTributaria.setNombreComercial(facturaDTO.getInfoTributaria().getNombreComercial());
-        InfoTributaria.setRuc(facturaDTO.getInfoTributaria().getRuc());
-        InfoTributaria.setClaveAcceso(facturaDTO.getInfoTributaria().getClaveAcceso());
-        InfoTributaria.setCodDoc(facturaDTO.getInfoTributaria().getCodDoc());
-        InfoTributaria.setEstab(facturaDTO.getInfoTributaria().getEstab());
-        InfoTributaria.setPtoEmi(facturaDTO.getInfoTributaria().getPtoEmi());
-        InfoTributaria.setSecuencial(facturaDTO.getInfoTributaria().getSecuencial());
-        InfoTributaria.setDirMatriz(facturaDTO.getInfoTributaria().getDirMatriz());
-        factura.setInfoTributaria(InfoTributaria);
 
         InfoFactura infoFactura = new InfoFactura();
         infoFactura.setFechaEmision(facturaDTO.getInfoFactura().getFechaEmision());
@@ -136,7 +111,7 @@ public class FacturaDTOMapper extends AbstractDTOMapper<FacturaDTO, Factura> {
         factura.setInfoFactura(infoFactura);
 
         factura.setDetalle(detalles);
-        factura.setCampoAdicional(infoAdicional);
+
         return factura;
     }
 }

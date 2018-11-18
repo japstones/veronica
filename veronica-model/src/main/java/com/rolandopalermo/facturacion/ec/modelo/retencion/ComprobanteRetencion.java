@@ -4,14 +4,9 @@
  */
 package com.rolandopalermo.facturacion.ec.modelo.retencion;
 
-import com.rolandopalermo.facturacion.ec.modelo.CampoAdicional;
-import com.rolandopalermo.facturacion.ec.modelo.InfoTributaria;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.rolandopalermo.facturacion.ec.modelo.Comprobante;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Singular;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,8 +18,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @XmlRootElement(name = "comprobanteRetencion")
 @XmlType(propOrder = {
         "id",
@@ -34,24 +27,14 @@ import java.util.List;
         "impuesto",
         "campoAdicional"
 })
-public class ComprobanteRetencion {
+public class ComprobanteRetencion extends Comprobante {
 
-    private final String id;
-    private final String version;
-    private final InfoTributaria infoTributaria;
-    private final InfoCompRetencion infoCompRetencion;
-    private final List<Impuesto> impuesto;
-    @Singular("campoAdicional")
-    private final List<CampoAdicional> campoAdicional;
+    private InfoCompRetencion infoCompRetencion;
+    private List<Impuesto> impuesto;
 
     @XmlElementWrapper(name = "impuestos")
     public List<Impuesto> getImpuesto() {
         return impuesto;
-    }
-
-    @XmlElementWrapper(name = "infoAdicional")
-    public List<CampoAdicional> getCampoAdicional() {
-        return campoAdicional;
     }
 
 }

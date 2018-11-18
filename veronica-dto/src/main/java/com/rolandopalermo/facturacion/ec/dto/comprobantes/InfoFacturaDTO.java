@@ -1,6 +1,5 @@
 package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -12,39 +11,14 @@ import java.util.List;
 
 @Getter
 @Setter
-@JsonPropertyOrder({
-        "fechaEmision",
-        "dirEstablecimiento",
-        "contribuyenteEspecial",
-        "obligadoContabilidad",
-        "tipoIdentificacionComprador",
-        "guiaRemision",
-        "razonSocialComprador",
-        "identificacionComprador",
-        "direccionComprador",
-        "totalSinImpuestos",
-        "totalDescuento",
-        "totalImpuesto",
-        "propina",
-        "importeTotal",
-        "moneda",
-        "pagos",
-        "valorRetIva",
-        "valorRetRenta"
-})
-public class InfoFacturaDTO {
+public class InfoFacturaDTO extends InfoComprobanteDTO {
 
-    @NotEmpty
-    private String fechaEmision;
-    @NotEmpty
-    private String dirEstablecimiento;
-    private String contribuyenteEspecial;
-    private String obligadoContabilidad;
     @NotEmpty
     private String tipoIdentificacionComprador;
     private String guiaRemision;
     @NotEmpty
     private String razonSocialComprador;
+    @NotEmpty
     private String identificacionComprador;
     private String direccionComprador;
     @NotNull

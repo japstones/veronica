@@ -10,12 +10,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FacturaDTO extends ComprobanteDTO {
+public class RetencionDTO extends ComprobanteDTO {
 
-    private InfoFacturaDTO infoFactura;
+    private InfoRetencionDTO infoRetencion;
     @NotNull
     @Valid
     @Size(min = 1)
-    private List<FacturaDetalleDTO> detalle;
+    private List<ImpuestoDTO> impuesto;
 
 }

@@ -1,23 +1,6 @@
 package com.rolandopalermo.facturacion.ec.common.sri;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.cert.X509Certificate;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-
+import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import es.mityc.firmaJava.libreria.utilidades.UtilidadTratarNodo;
 import es.mityc.firmaJava.libreria.xades.DataToSign;
 import es.mityc.firmaJava.libreria.xades.FirmaXML;
@@ -26,6 +9,28 @@ import es.mityc.javasign.pkstore.IPKStoreManager;
 import es.mityc.javasign.pkstore.keystore.KSStore;
 import lombok.Getter;
 import lombok.Setter;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Provider;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.List;
 
 /**
  * <p>
@@ -63,20 +68,20 @@ public abstract class GenericXMLSignature {
 	 * el nombre devuelto por el método abstracto <code>getSignFileName</code>
 	 * </p>
 	 */
-	protected void execute() throws Exception {
+	protected void execute() throws VeronicaException {
 		IPKStoreManager storeManager = getPKStoreManager();
 		if (storeManager == null) {
-			throw new Exception("No se pudo obtener el gestor de claves.");
+			throw new VeronicaException("No se pudo obtener el gestor de claves.");
 		}
 		X509Certificate certificate = getFirstCertificate(storeManager);
 		if (certificate == null) {
-			throw new Exception("No se pudo obtener el certificado para firmar.");
+			throw new VeronicaException("No se pudo obtener el certificado para firmar.");
 		}
 		PrivateKey privateKey;
 		try {
 			privateKey = storeManager.getPrivateKey(certificate);
 		} catch (CertStoreException e) {
-			throw new Exception("No se pudo obtener la clave privada asociada al certificado.");
+			throw new VeronicaException("No se pudo obtener la clave privada asociada al certificado.");
 		}
 		Provider provider = storeManager.getProvider(certificate);
 		DataToSign dataToSign = createDataToSign();
@@ -86,7 +91,7 @@ public abstract class GenericXMLSignature {
 			Object[] res = firma.signFile(certificate, dataToSign, privateKey, provider);
 			docSigned = (Document) res[0];
 		} catch (Exception ex) {
-			throw new Exception("No se pudo obtener objeto encargado de realizar la firma.");
+			throw new VeronicaException("No se pudo obtener objeto encargado de realizar la firma.");
 		}
 		saveDocumentToFile(docSigned, getSignatureFileName());
 	}
@@ -101,7 +106,7 @@ public abstract class GenericXMLSignature {
 	 * @return El objeto DataToSign que contiene toda la información de la firma a
 	 *         realizar
 	 */
-	protected abstract DataToSign createDataToSign() throws Exception;
+	protected abstract DataToSign createDataToSign() throws VeronicaException;
 
 	/**
 	 * <p>
@@ -143,10 +148,15 @@ public abstract class GenericXMLSignature {
 	 * @param pathfile
 	 *            El path del fichero donde se quiere escribir.
 	 */
-	private void saveDocumentToFile(Document document, String pathfile) throws Exception {
-		FileOutputStream fos = new FileOutputStream(pathfile);
-		UtilidadTratarNodo.saveDocumentToOutputStream(document, fos, true);
-		fos.close();
+	private void saveDocumentToFile(Document document, String pathfile) throws VeronicaException {
+		try {
+			FileOutputStream fos = new FileOutputStream(pathfile);
+			UtilidadTratarNodo.saveDocumentToOutputStream(document, fos, true);
+			fos.close();
+		} catch (IOException ex) {
+			throw new VeronicaException(ex);
+		}
+
 	}
 
 	/**
@@ -180,13 +190,16 @@ public abstract class GenericXMLSignature {
 	 *            El recurso que se desea obtener
 	 * @return El <code>Document</code> asociado al <code>resource</code>
 	 */
-	protected Document getDocument(String resource) throws Exception {
-		Document doc = null;
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		doc = dbf.newDocumentBuilder().parse(new File(resource));
-		return doc;
+	protected Document getDocument(String resource) throws VeronicaException {
+		try {
+			Document doc = null;
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setNamespaceAware(true);
+			doc = dbf.newDocumentBuilder().parse(new File(resource));
+			return doc;
+		} catch (ParserConfigurationException | IOException | SAXException ex) {
+			throw new VeronicaException(ex);
+		}
 	}
 
 	/**
@@ -218,14 +231,18 @@ public abstract class GenericXMLSignature {
 	 * @return El gestor de claves que se va a utilizar
 	 *         </p>
 	 */
-	private IPKStoreManager getPKStoreManager() throws Exception {
-		IPKStoreManager storeManager = null;
-		KeyStore ks = KeyStore.getInstance("PKCS12");
-		InputStream is = new java.io.FileInputStream(pkcs12_resource);
-		ks.load(is, pkcs12_pasword.toCharArray());
-		storeManager = new KSStore(ks, new PassStoreKS(pkcs12_pasword));
-		is.close();
-		return storeManager;
+	private IPKStoreManager getPKStoreManager() throws VeronicaException {
+		try {
+			IPKStoreManager storeManager = null;
+			KeyStore ks = KeyStore.getInstance("PKCS12");
+			InputStream is = new java.io.FileInputStream(pkcs12_resource);
+			ks.load(is, pkcs12_pasword.toCharArray());
+			storeManager = new KSStore(ks, new PassStoreKS(pkcs12_pasword));
+			is.close();
+			return storeManager;
+		} catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException ex) {
+			throw new VeronicaException(ex);
+		}
 	}
 
 	/**
@@ -237,14 +254,17 @@ public abstract class GenericXMLSignature {
 	 *            Interfaz de acceso al almacén
 	 * @return Primer certificado disponible en el almacén
 	 */
-	private X509Certificate getFirstCertificate(final IPKStoreManager storeManager) throws Exception {
-		List<X509Certificate> certs = null;
-		certs = storeManager.getSignCertificates();
-		if ((certs == null) || (certs.size() == 0)) {
-			throw new Exception("La lista de certificados se encuentra vacía.");
+	private X509Certificate getFirstCertificate(final IPKStoreManager storeManager) throws VeronicaException {
+		try {
+			List<X509Certificate> certs = null;
+			certs = storeManager.getSignCertificates();
+			if ((certs == null) || (certs.size() == 0)) {
+				throw new VeronicaException("La lista de certificados se encuentra vacía.");
+			}
+			X509Certificate certificate = certs.get(0);
+			return certificate;
+		}catch (CertStoreException ex) {
+			throw new VeronicaException(ex);
 		}
-
-		X509Certificate certificate = certs.get(0);
-		return certificate;
 	}
 }
