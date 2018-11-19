@@ -72,6 +72,7 @@ https://documenter.getpostman.com/view/1388083/RzZCDHct
 
 ### POST /api/v1/generar/factura
 Example: http://localhost:8080/veronica/api/v1/generar/factura
+
 Request body:
 ```
 {
