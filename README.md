@@ -68,12 +68,7 @@ https://documenter.getpostman.com/view/1388083/RzZCDHct
 ## Request & Response Examples
 ### API Resources
 
-- [POST /api/v1/generar/factura](#post-generar-factura)
-- [POST /api/v1/generar/retencion](#post-generar-retencion)
-- [POST /api/v1/firmar/factura](#post-firmar-factura)
-- [POST /api/v1/firmar/factura](#post-firmar-factura-content)
-- [POST /api/v1/sri/enviar/factura](#post-enviar-factura)
-- [POST /api/v1/sri/autorizar](#post-autorizar-factura)
+- [POST /api/v1/generar/factura](#post-apiv1generarfactura)
 
 ### POST /api/v1/generar/factura
 Example: http://localhost:8080/veronica/api/v1/generar/factura
