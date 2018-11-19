@@ -29,12 +29,11 @@ public class RespuestaSolicitudMapper {
                             if (comprobante.getMensajes() != null && comprobante.getMensajes().getMensaje() != null) {
                                 List<MensajeDTO> mensajes = comprobante.getMensajes().getMensaje().stream()
                                         .map(mensaje -> {
-                                            MensajeDTO mensajeDTO = MensajeDTO.builder()
-                                                    .identificador(mensaje.getIdentificador())
-                                                    .informacionAdicional(mensaje.getInformacionAdicional())
-                                                    .mensaje(mensaje.getMensaje())
-                                                    .tipo(mensaje.getTipo())
-                                                    .build();
+                                            MensajeDTO mensajeDTO = new MensajeDTO();
+                                            mensajeDTO.setIdentificador(mensaje.getIdentificador());
+                                            mensajeDTO.setInformacionAdicional(mensaje.getInformacionAdicional());
+                                            mensajeDTO.setMensaje(mensaje.getMensaje());
+                                            mensajeDTO.setTipo(mensaje.getTipo());
                                             return mensajeDTO;
                                         })
                                         .collect(Collectors.toList());

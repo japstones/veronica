@@ -23,7 +23,7 @@ public class RespuestaComprobanteMapper {
         if (respuestaComprobante != null) {
             List<AutorizacionDTO> autorizaciones = new ArrayList<>();
             if (respuestaComprobante.getAutorizaciones() != null && respuestaComprobante.getAutorizaciones().getAutorizacion() != null) {
-                respuestaComprobante.getAutorizaciones().getAutorizacion().stream()
+                autorizaciones = respuestaComprobante.getAutorizaciones().getAutorizacion().stream()
                         .map(autorizacion -> {
                             String fechaAutorizacion = "";
                             try {
@@ -33,14 +33,13 @@ public class RespuestaComprobanteMapper {
                             }
                             List<MensajeDTO> mensajes = new ArrayList<>();
                             if (autorizacion.getMensajes() != null && autorizacion.getMensajes().getMensaje() != null) {
-                                autorizacion.getMensajes().getMensaje().stream()
+                                mensajes = autorizacion.getMensajes().getMensaje().stream()
                                         .map(mensaje -> {
-                                            MensajeDTO mensajeDTO = MensajeDTO.builder()
-                                                    .identificador(mensaje.getIdentificador())
-                                                    .informacionAdicional(mensaje.getInformacionAdicional())
-                                                    .mensaje(mensaje.getMensaje())
-                                                    .tipo(mensaje.getTipo())
-                                                    .build();
+                                            MensajeDTO mensajeDTO = new MensajeDTO();
+                                            mensajeDTO.setIdentificador(mensaje.getIdentificador());
+                                            mensajeDTO.setInformacionAdicional(mensaje.getInformacionAdicional());
+                                            mensajeDTO.setMensaje(mensaje.getMensaje());
+                                            mensajeDTO.setTipo(mensaje.getTipo());
                                             return mensajeDTO;
                                         })
                                         .collect(Collectors.toList());
@@ -57,12 +56,10 @@ public class RespuestaComprobanteMapper {
                         })
                         .collect(Collectors.toList());
             }
-            dto = RespuestaComprobanteDTO
-                    .builder()
-                    .claveAccesoConsultada(respuestaComprobante.getClaveAccesoConsultada())
-                    .numeroComprobantes(respuestaComprobante.getNumeroComprobantes())
-                    .autorizaciones(autorizaciones)
-                    .build();
+            dto = new RespuestaComprobanteDTO();
+            dto.setClaveAccesoConsultada(respuestaComprobante.getClaveAccesoConsultada());
+            dto.setNumeroComprobantes(respuestaComprobante.getNumeroComprobantes());
+            dto.setAutorizaciones(autorizaciones);
         }
         return dto;
     }

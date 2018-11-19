@@ -49,12 +49,15 @@ public class SriBO {
         String rutaArchivoXML = UUID.randomUUID().toString();
         File temp = File.createTempFile(rutaArchivoXML, ".xml");
         rutaArchivoXML = temp.getAbsolutePath();
+        String claveAcceso = "";
         // Actividad 2.- Ejecutar Marshalling
         if(comprobanteDTO.getComprobanteAsObj() instanceof FacturaDTO) {
             Factura factura = facturaMapper.toModel((FacturaDTO) comprobanteDTO.getComprobanteAsObj());
+            claveAcceso = factura.getInfoTributaria().getClaveAcceso();
             JaxbUtils.marshall(factura, rutaArchivoXML);
         } else if(comprobanteDTO.getComprobanteAsObj() instanceof RetencionDTO) {
             ComprobanteRetencion retencion = retencionMapper.toModel((RetencionDTO) comprobanteDTO.getComprobanteAsObj());
+            claveAcceso = retencion.getInfoTributaria().getClaveAcceso();
             JaxbUtils.marshall(retencion, rutaArchivoXML);
         }
         // Actividad 3.- Firmar el archivo
@@ -62,7 +65,9 @@ public class SriBO {
                 comprobanteDTO.getRutaArchivoPkcs12(), comprobanteDTO.getClaveArchivopkcs12());
         //Actividad 4.- Llamar al WS del SRI
         EnvioComprobantesProxy proxy = new EnvioComprobantesProxy(wsdlRecepcion);
+        //Actividad 5.- Procesar respuesta del SRI
         RespuestaSolicitudDTO respuestaSolicitudDTO = respuestaSolicitudMapper.toModel(proxy.enviarComprobante(xml));
+        respuestaSolicitudDTO.setClaveAcceso(claveAcceso);
         if (!temp.delete()) {
             throw new VeronicaException("No se pudo eliminar los archivos temporales.");
         }

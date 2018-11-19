@@ -1,16 +1,16 @@
 package com.rolandopalermo.facturacion.ec.dto.rest;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
-public class RespuestaSolicitudDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ClaveAccesoDTO {
 
-    private String estado;
     private String claveAcceso;
-    private List<ComprobanteRespuestaDTO> comprobantes;
 
 }
