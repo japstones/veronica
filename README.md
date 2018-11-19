@@ -208,7 +208,7 @@ Response body:
 }
 ```
 
-### POST /api/v1/generar/factura
+### POST /api/v1/generar/retencion
 Example: http://localhost:8080/veronica/api/v1/generar/retencion
 
 Request body:
