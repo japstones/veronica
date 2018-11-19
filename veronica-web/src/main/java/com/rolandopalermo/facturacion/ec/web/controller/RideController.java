@@ -3,7 +3,6 @@ package com.rolandopalermo.facturacion.ec.web.controller;
 import com.rolandopalermo.facturacion.ec.bo.SriBO;
 import com.rolandopalermo.facturacion.ec.common.exception.InternalServerException;
 import com.rolandopalermo.facturacion.ec.common.exception.ResourceNotFoundException;
-import com.rolandopalermo.facturacion.ec.common.util.DateUtils;
 import com.rolandopalermo.facturacion.ec.dto.rest.AutorizacionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaComprobanteDTO;
 import com.rolandopalermo.facturacion.ec.ride.RIDEGenerator;
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.Optional;
 
 @RestController
@@ -49,8 +47,8 @@ public class RideController {
     private String wsdlAutorizacion;
 
     @ApiOperation(value = "Genera la RIDE de una factura en formato pdf")
-    @GetMapping(value = "/factura/{claveAcceso}", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> generarRideFactura(@ApiParam(value = "Clave de acceso del comprobante electrónico", required = true)
+    @GetMapping(value = "/factura/{claveAcceso}")
+    public ResponseEntity generarRideFactura(@ApiParam(value = "Clave de acceso del comprobante electrónico", required = true)
                                                                   @PathVariable("claveAcceso") String claveAcceso) {
         byte[] pdfContent = new byte[0];
         String claveAccesoConsultada = "";
@@ -65,7 +63,7 @@ public class RideController {
                     writer.write(autorizacion.get().getComprobante());
                 }
                 JasperPrint jasperPrint = RIDEGenerator.convertirFacturaARide(autorizacion.get().getNumeroAutorizacion(),
-                        DateUtils.convertirGreggorianToDDMMYYYY(autorizacion.get().getFechaAutorizacion().toString()), comprobante.getAbsolutePath());
+                        autorizacion.get().getFechaAutorizacion(), comprobante.getAbsolutePath());
                 pdfContent = JasperExportManager.exportReportToPdf(jasperPrint);
 
                 if (!comprobante.delete()) {
@@ -74,7 +72,7 @@ public class RideController {
             } else {
                 throw new ResourceNotFoundException(String.format("No se pudo encontrar el comprobante de autorización [%S].", claveAcceso));
             }
-        } catch (IOException | ParseException | JRException e) {
+        } catch (IOException | JRException e) {
             logger.error("generarRetencion", e);
             throw new InternalServerException(e.getMessage());
         }

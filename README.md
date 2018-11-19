@@ -45,19 +45,16 @@ mvn install:install-file -Dfile=xmlsec-1.4.2-ADSI-1.0.jar -DgroupId=org.apache.x
 ```
 3.- This project provides two maven profiles. Using the next command, you will  be able the choose the correct profile according to your environment (DEV or PRD). 
 ```bash
-mvn clean install -P development
+$ cd veronica-web
+$ mvn spring-boot:run -Pdevelopment
 ```
 
-```bash
-mvn clean install -P production
-```
-Change the content with appropriate values, according with your configuration.
-
-## Deployment
 ```bash
 $ cd veronica-web
-$ mvn spring-boot:run
+$ mvn spring-boot:run -Pproduction
 ```
+
+Change the content with appropriate values, according with your configuration.
 
 ## Documentation
 http://localhost:8080/veronica/swagger-ui.html
