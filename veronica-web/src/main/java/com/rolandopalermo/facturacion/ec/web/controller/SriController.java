@@ -1,6 +1,7 @@
 package com.rolandopalermo.facturacion.ec.web.controller;
 
 import com.rolandopalermo.facturacion.ec.bo.SriBO;
+import com.rolandopalermo.facturacion.ec.common.exception.InternalServerException;
 import com.rolandopalermo.facturacion.ec.common.exception.ResourceNotFoundException;
 import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import com.rolandopalermo.facturacion.ec.dto.rest.ClaveAccesoDTO;
@@ -48,31 +49,49 @@ public class SriController {
     @PostMapping(value = "/enviar/factura", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaSolicitudDTO> enviarFactura(
             @ApiParam(value = "Comprobante electrónico", required = true)
-            @RequestBody FacturaRequestDTO request) throws JAXBException, IOException, VeronicaException {
+            @RequestBody FacturaRequestDTO request) {
         if (!new File(rutaArchivoPkcs12).exists()) {
             throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
         }
-        return new ResponseEntity<RespuestaSolicitudDTO>(sriBO.enviarComprobante(request, wsdlRecepcion), HttpStatus.OK);
+        try {
+            return new ResponseEntity<RespuestaSolicitudDTO>(sriBO.enviarComprobante(request, wsdlRecepcion), HttpStatus.OK);
+        } catch (IOException | JAXBException | VeronicaException e) {
+            logger.error("enviarFactura", e);
+            throw new InternalServerException(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "Envía un comprobante de retención a validar al SRI")
     @PostMapping(value = "/enviar/retencion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaSolicitudDTO> enviarRetencion(
             @ApiParam(value = "Comprobante electrónico", required = true)
-            @RequestBody RetencionRequestDTO request) throws JAXBException, IOException, VeronicaException {
+            @RequestBody RetencionRequestDTO request) {
         if (!new File(rutaArchivoPkcs12).exists()) {
             throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
         }
-        return new ResponseEntity<RespuestaSolicitudDTO>(sriBO.enviarComprobante(request, wsdlRecepcion), HttpStatus.OK);
+        RespuestaSolicitudDTO respuestaSolicitudDTO = new RespuestaSolicitudDTO();
+        try {
+            respuestaSolicitudDTO = sriBO.enviarComprobante(request, wsdlRecepcion);
+        } catch (IOException | JAXBException | VeronicaException e) {
+            logger.error("enviarRetencion", e);
+            throw new InternalServerException(e.getMessage());
+        }
+        return new ResponseEntity<RespuestaSolicitudDTO>(respuestaSolicitudDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Autoriza un comprobante electrónico")
     @PostMapping(value = "/autorizar", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaComprobanteDTO> autorizarComprobante(
             @ApiParam(value = "Clave de acceso del comprobante electrónico", required = true)
-            @RequestBody ClaveAccesoDTO request) throws MalformedURLException {
-        return new ResponseEntity<RespuestaComprobanteDTO>(
-                sriBO.autorizarComprobante(request.getClaveAcceso(), wsdlAutorizacion), HttpStatus.OK);
+            @RequestBody ClaveAccesoDTO request) {
+        RespuestaComprobanteDTO respuestaComprobanteDTO = new RespuestaComprobanteDTO();
+        try {
+            respuestaComprobanteDTO = sriBO.autorizarComprobante(request.getClaveAcceso(), wsdlAutorizacion);
+        } catch (MalformedURLException e) {
+            logger.error("autorizarComprobante", e);
+            throw new InternalServerException(e.getMessage());
+        }
+        return new ResponseEntity<RespuestaComprobanteDTO>(respuestaComprobanteDTO, HttpStatus.OK);
     }
 
 }
