@@ -6,7 +6,6 @@ package com.rolandopalermo.facturacion.ec.modelo.factura;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Singular;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
@@ -34,7 +33,7 @@ import java.util.List;
         "propina",
         "importeTotal",
         "moneda",
-        "pagos",
+        "pago",
         "valorRetIva",
         "valorRetRenta"
 })
@@ -51,13 +50,11 @@ public class InfoFactura {
     private String direccionComprador;
     private BigDecimal totalSinImpuestos;
     private BigDecimal totalDescuento;
-    @Singular("totalImpuesto")
     private List<TotalImpuesto> totalImpuesto;
     private BigDecimal propina;
     private BigDecimal importeTotal;
     private String moneda;
-    @Singular("pagos")
-    private List<Pago> pagos;
+    private List<Pago> pago;
     private BigDecimal valorRetIva;
     private BigDecimal valorRetRenta;
 
@@ -67,8 +64,8 @@ public class InfoFactura {
     }
 
     @XmlElementWrapper(name = "pagos")
-    public List<Pago> getPagos() {
-        return pagos;
+    public List<Pago> getPago() {
+        return pago;
     }
 
 }

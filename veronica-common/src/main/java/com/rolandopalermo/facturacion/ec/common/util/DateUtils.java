@@ -22,4 +22,10 @@ public class DateUtils {
         return fecha;
     }
 
+    public static Date getFechaFromStringddMMyyyy(String fecha) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = sdf.parse(fecha);
+        return date;
+    }
+
 }

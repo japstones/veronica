@@ -7,6 +7,7 @@ import com.rolandopalermo.facturacion.ec.dto.comprobantes.RetencionDTO;
 import com.rolandopalermo.facturacion.ec.mapper.FacturaMapper;
 import com.rolandopalermo.facturacion.ec.mapper.RetencionMapper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBException;
@@ -16,15 +17,17 @@ import java.io.IOException;
 public class GeneradorBO {
 
     private static final Logger logger = Logger.getLogger(GeneradorBO.class);
+    @Autowired
+    private FacturaMapper facturaMapper;
+    @Autowired
+    private RetencionMapper retencionMapper;
 
     public byte[] generarXMLFactura(FacturaDTO facturaRequestDTO) throws VeronicaException, IOException, JAXBException {
-        FacturaMapper mapper = new FacturaMapper();
-        return FileUtils.convertirObjAXML(mapper.toModel(facturaRequestDTO));
+        return FileUtils.convertirObjAXML(facturaMapper.toModel(facturaRequestDTO));
     }
 
     public byte[] generarXMLRetencion(RetencionDTO retencionDTO) throws VeronicaException, IOException, JAXBException {
-       RetencionMapper mapper = new RetencionMapper();
-        return FileUtils.convertirObjAXML(mapper.toModel(retencionDTO));
+        return FileUtils.convertirObjAXML(retencionMapper.toModel(retencionDTO));
     }
 
 }

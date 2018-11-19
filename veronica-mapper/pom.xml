@@ -26,6 +26,16 @@
             <artifactId>veronica-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.rolandopalermo.facturacion.ec</groupId>
+            <artifactId>veronica-soap</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rolandopalermo.facturacion.ec</groupId>
+            <artifactId>veronica-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

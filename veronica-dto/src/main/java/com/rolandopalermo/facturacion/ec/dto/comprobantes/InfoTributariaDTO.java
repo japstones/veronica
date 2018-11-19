@@ -32,8 +32,6 @@ public class InfoTributariaDTO {
     @NotEmpty
     private String ruc;
     @NotEmpty
-    private String claveAcceso;
-    @NotEmpty
     private String codDoc;
     @NotEmpty
     private String estab;

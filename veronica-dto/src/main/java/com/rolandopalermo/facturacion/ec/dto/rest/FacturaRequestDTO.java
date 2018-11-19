@@ -6,11 +6,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FirmaFacturaDTO {
-
-    private byte[] facturaAsBase64;
-    private FacturaDTO facturaAsObj;
-    private String rutaArchivoPkcs12;
-    private String claveArchivopkcs12;
-
+public final class FacturaRequestDTO extends GenericComprobanteRequestDTO<FacturaDTO> {
 }

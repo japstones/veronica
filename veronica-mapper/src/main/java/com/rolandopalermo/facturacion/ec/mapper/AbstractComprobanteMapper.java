@@ -9,7 +9,7 @@ import com.rolandopalermo.facturacion.ec.modelo.InfoTributaria;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AbstractMapper<DTO extends ComprobanteDTO, Model extends Comprobante> {
+public abstract class AbstractComprobanteMapper<DTO extends ComprobanteDTO, Model extends Comprobante> {
 
     public abstract Model toModel(DTO dto);
 
@@ -20,7 +20,6 @@ public abstract class AbstractMapper<DTO extends ComprobanteDTO, Model extends C
         InfoTributaria.setRazonSocial(dto.getInfoTributaria().getRazonSocial());
         InfoTributaria.setNombreComercial(dto.getInfoTributaria().getNombreComercial());
         InfoTributaria.setRuc(dto.getInfoTributaria().getRuc());
-        InfoTributaria.setClaveAcceso(dto.getInfoTributaria().getClaveAcceso());
         InfoTributaria.setCodDoc(dto.getInfoTributaria().getCodDoc());
         InfoTributaria.setEstab(dto.getInfoTributaria().getEstab());
         InfoTributaria.setPtoEmi(dto.getInfoTributaria().getPtoEmi());

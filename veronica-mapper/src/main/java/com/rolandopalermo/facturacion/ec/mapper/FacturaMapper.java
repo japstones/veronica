@@ -1,5 +1,7 @@
 package com.rolandopalermo.facturacion.ec.mapper;
 
+import com.rolandopalermo.facturacion.ec.common.sri.ClaveDeAcceso;
+import com.rolandopalermo.facturacion.ec.common.util.DateUtils;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.DetAdicionalDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDetalleDTO;
@@ -8,20 +10,28 @@ import com.rolandopalermo.facturacion.ec.dto.comprobantes.PagoDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.TotalImpuestoDTO;
 import com.rolandopalermo.facturacion.ec.modelo.DetAdicional;
 import com.rolandopalermo.facturacion.ec.modelo.Impuesto;
+import com.rolandopalermo.facturacion.ec.modelo.InfoTributaria;
 import com.rolandopalermo.facturacion.ec.modelo.factura.Factura;
 import com.rolandopalermo.facturacion.ec.modelo.factura.FacturaDetalle;
 import com.rolandopalermo.facturacion.ec.modelo.factura.InfoFactura;
 import com.rolandopalermo.facturacion.ec.modelo.factura.Pago;
 import com.rolandopalermo.facturacion.ec.modelo.factura.TotalImpuesto;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FacturaMapper extends AbstractMapper<FacturaDTO, Factura> {
+@Component
+public class FacturaMapper extends AbstractComprobanteMapper<FacturaDTO, Factura> {
+
+    private static final Logger logger = Logger.getLogger(FacturaMapper.class);
 
     public Factura toModel(FacturaDTO facturaDTO) {
+        InfoTributaria infoTributaria = buildInfoTributaria(facturaDTO);
         Factura factura = new Factura();
-        factura.setInfoTributaria(buildInfoTributaria(facturaDTO));
         factura.setCampoAdicional(buildCamposAdicionales(facturaDTO));
         factura.setId(facturaDTO.getId());
         factura.setVersion(facturaDTO.getVersion());
@@ -105,13 +115,35 @@ public class FacturaMapper extends AbstractMapper<FacturaDTO, Factura> {
         infoFactura.setPropina(facturaDTO.getInfoFactura().getPropina());
         infoFactura.setImporteTotal(facturaDTO.getInfoFactura().getImporteTotal());
         infoFactura.setMoneda(facturaDTO.getInfoFactura().getMoneda());
-        infoFactura.setPagos(pagos);
+        infoFactura.setPago(pagos);
         infoFactura.setValorRetIva(facturaDTO.getInfoFactura().getValorRetIva());
         infoFactura.setValorRetRenta(facturaDTO.getInfoFactura().getValorRetRenta());
         factura.setInfoFactura(infoFactura);
 
         factura.setDetalle(detalles);
 
+        StringBuilder sb = new StringBuilder(infoTributaria.getPtoEmi());
+        sb.append(infoTributaria.getEstab());
+        String serie = sb.toString();
+        String codigoNumerico = RandomStringUtils.randomNumeric(8);
+        String claveAcceso = "";
+        try {
+            claveAcceso = ClaveDeAcceso.builder()
+                    .fechaEmision(DateUtils.getFechaFromStringddMMyyyy(infoFactura.getFechaEmision()))
+                    .ambiente(infoTributaria.getAmbiente())
+                    .codigoNumerico(codigoNumerico)
+                    .numeroComprobante(infoTributaria.getSecuencial())
+                    .ruc(infoTributaria.getRuc())
+                    .serie(serie)
+                    .tipoComprobante(infoTributaria.getCodDoc())
+                    .tipoEmision(infoTributaria.getTipoEmision())
+                    .build()
+                    .generarClaveAcceso();
+        } catch (ParseException e) {
+            logger.error("FacturaMapper", e);
+        }
+        infoTributaria.setClaveAcceso(claveAcceso);
+        factura.setInfoTributaria(infoTributaria);
         return factura;
     }
 }
