@@ -11,11 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 public class FacturaDTO extends ComprobanteDTO {
-
-    private InfoFacturaDTO infoFactura;
-    @NotNull
-    @Valid
-    @Size(min = 1)
-    private List<FacturaDetalleDTO> detalle;
+	@Valid
+	private InfoFacturaDTO infoFactura;
+	@NotNull
+	@Valid
+	@Size(min = 1)
+	private List<FacturaDetalleDTO> detalle;
 
 }

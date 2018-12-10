@@ -4,6 +4,7 @@ import com.rolandopalermo.facturacion.ec.bo.GeneradorBO;
 import com.rolandopalermo.facturacion.ec.common.exception.InternalServerException;
 import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDTO;
+import com.rolandopalermo.facturacion.ec.dto.comprobantes.GuiaRemisionDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.RetencionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.ByteArrayResponseDTO;
 import io.swagger.annotations.Api;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
+
+import java.io.Console;
 import java.io.IOException;
 
 import static com.rolandopalermo.facturacion.ec.common.util.Constantes.API_DOC_ANEXO_1;
@@ -56,6 +59,23 @@ public class GeneracionController {
         try {
             content = generadorBO.generarXMLRetencion(request);
             ByteArrayResponseDTO response = new ByteArrayResponseDTO(content);
+        } catch (VeronicaException | IOException | JAXBException e) {
+            logger.error("generarRetencion", e);
+            throw new InternalServerException(e.getMessage());
+        }
+        return new ResponseEntity<ByteArrayResponseDTO>(new ByteArrayResponseDTO(content), HttpStatus.OK);
+    }
+
+    
+   
+    @ApiOperation(value = "Genera una guia de remision en formato XML")
+    @PostMapping(value = "/guia-remicion", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ByteArrayResponseDTO> generarGuiaRmision(@Valid @ApiParam(value = API_DOC_ANEXO_1, required = true) @RequestBody GuiaRemisionDTO request) {
+        byte[] content = new byte[0];
+        try {
+            content = generadorBO.generarGuiaXMLRemison(request);
+            ByteArrayResponseDTO response = new ByteArrayResponseDTO(content);
+           
         } catch (VeronicaException | IOException | JAXBException e) {
             logger.error("generarRetencion", e);
             throw new InternalServerException(e.getMessage());
