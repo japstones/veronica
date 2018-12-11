@@ -36,10 +36,6 @@ public class SriController {
     private static final Logger logger = Logger.getLogger(SriController.class);
     @Autowired
     private SriBO sriBO;
-    @Value("${pkcs12.certificado.ruta}")
-    private String rutaArchivoPkcs12;
-    @Value("${pkcs12.certificado.clave}")
-    private String claveArchivopkcs12;
     @Value("${sri.wsdl.recepcion}")
     private String wsdlRecepcion;
     @Value("${sri.wsdl.autorizacion}")
@@ -50,7 +46,7 @@ public class SriController {
     public ResponseEntity<RespuestaSolicitudDTO> enviarFactura(
             @ApiParam(value = "Comprobante electrónico", required = true)
             @RequestBody FacturaRequestDTO request) {
-        if (!new File(rutaArchivoPkcs12).exists()) {
+        if (!new File(request.getRutaArchivoPkcs12()).exists()) {
             throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
         }
         try {
@@ -66,7 +62,7 @@ public class SriController {
     public ResponseEntity<RespuestaSolicitudDTO> enviarRetencion(
             @ApiParam(value = "Comprobante electrónico", required = true)
             @RequestBody RetencionRequestDTO request) {
-        if (!new File(rutaArchivoPkcs12).exists()) {
+        if (!new File(request.getRutaArchivoPkcs12()).exists()) {
             throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
         }
         RespuestaSolicitudDTO respuestaSolicitudDTO = new RespuestaSolicitudDTO();
