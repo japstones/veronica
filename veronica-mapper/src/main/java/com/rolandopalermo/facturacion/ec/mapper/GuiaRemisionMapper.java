@@ -2,19 +2,16 @@ package com.rolandopalermo.facturacion.ec.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.util.stream.Stream;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-
+import com.rolandopalermo.facturacion.ec.dto.comprobantes.DestinatarioDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.DetAdicionalDTO;
-import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDetalleDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.GuiaDetallesDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.GuiaRemisionDTO;
-import com.rolandopalermo.facturacion.ec.dto.comprobantes.TotalImpuestoDTO;
 import com.rolandopalermo.facturacion.ec.modelo.DetAdicional;
 import com.rolandopalermo.facturacion.ec.modelo.InfoTributaria;
-import com.rolandopalermo.facturacion.ec.modelo.factura.FacturaDetalle;
-import com.rolandopalermo.facturacion.ec.modelo.factura.TotalImpuesto;
+import com.rolandopalermo.facturacion.ec.modelo.guia.Destinatario;
 import com.rolandopalermo.facturacion.ec.modelo.guia.GuiaDetalles;
 import com.rolandopalermo.facturacion.ec.modelo.guia.GuiaRemision;
 import com.rolandopalermo.facturacion.ec.modelo.guia.InfoGuiaRemision;
@@ -34,28 +31,51 @@ public class GuiaRemisionMapper extends AbstractComprobanteMapper<GuiaRemisionDT
 		
 		//Procesando el Detalle de la guia 
 		
-		   List<GuiaDetallesDTO> guiaDetalleDTO = guiaRemisionDTO.getGuiadetalle();
-	        List<GuiaDetalles> guiaDetalle = guiaDetalleDTO.stream()
-	                .map(guiasDetRes -> {
-	                	GuiaDetalles detalle = new GuiaDetalles(); 
-	                	detalle.setCodigoInterno(guiasDetRes.getCodigoInterno());
-	                	detalle.setCodigoAdicional(guiasDetRes.getCodigoAdicional());
-	                	detalle.setDescripcion(guiasDetRes.getDescripcion());
-	                	detalle.setCantidad(guiasDetRes.getCantidad());
-	                	List<DetAdicionalDTO> detallesAdicionalesDTO =guiasDetRes.getDetAdicional();
-	                	List<DetAdicional> detallesAdicionales = detallesAdicionalesDTO.stream()
-	                            .map(detAdicionalDTO -> {
-	                                DetAdicional detAdicional = new DetAdicional();
-	                                detAdicional.setNombre(detAdicionalDTO.getNombre());
-	                                detAdicional.setValor(detAdicionalDTO.getValor());
-	                                
-	                                return detAdicional;
-	                            })
-	                            .collect(Collectors.toList());
-	                	detalle.setDetAdicional(detallesAdicionales);
-	                    return detalle;
-	                })
-	                .collect(Collectors.toList());
+		   List<DestinatarioDTO> guiaDetalleDTO = guiaRemisionDTO.getDestinatario();
+		   List<Destinatario> guiaDestiRes=guiaDetalleDTO.stream()
+		   .map(guiaDestinatario -> {
+			   Destinatario des = new Destinatario(); 
+			   des.setIdentificacionDestinatario(guiaDestinatario.getIdentificacionDestinatario());
+			   des.setRazonSocialDestinatario(guiaDestinatario.getRazonSocialDestinatario());
+			   des.setDirDestinatario(guiaDestinatario.getDirDestinatario());
+			   des.setMotivoTraslado(guiaDestinatario.getMotivoTraslado());
+			   des.setDocAduaneroUnico(guiaDestinatario.getDocAduaneroUnico());
+			   des.setCodEstabDestino(guiaDestinatario.getCodEstabDestino());
+			   des.setRuta(guiaDestinatario.getRuta());
+			   des.setCodDocSustento(guiaDestinatario.getCodDocSustento());
+			   des.setNumDocSustento(guiaDestinatario.getNumDocSustento());
+			   des.setNumAutDocSustento(guiaDestinatario.getNumAutDocSustento());
+			   des.setFechaEmisionDocSustento(guiaDestinatario.getFechaEmisionDocSustento());
+			   List<GuiaDetallesDTO> guiaDetalleDTOS = guiaDestinatario.getDetalle();
+			   List<GuiaDetalles> detalles = guiaDetalleDTOS.stream()
+					   .map(guiaDetalleRes->{
+						   GuiaDetalles detalle = new GuiaDetalles(); 
+						   detalle.setCodigoInterno(guiaDetalleRes.getCodigoInterno());
+		                	detalle.setCodigoAdicional(guiaDetalleRes.getCodigoAdicional());
+		                	detalle.setDescripcion(guiaDetalleRes.getDescripcion());
+		                	detalle.setCantidad(guiaDetalleRes.getCantidad());
+		                	List<DetAdicionalDTO> detallesAdicionalesDTO =guiaDetalleRes.getDetAdicional();
+		                	List<DetAdicional> detallesAdicionales = detallesAdicionalesDTO.stream()
+		                            .map(detAdicionalDTO -> {
+		                                DetAdicional detAdicional = new DetAdicional();
+		                                detAdicional.setNombre(detAdicionalDTO.getNombre());
+		                                detAdicional.setValor(detAdicionalDTO.getValor());
+		                                
+		                                return detAdicional;
+		                            })
+		                            .collect(Collectors.toList());
+		                	detalle.setDetAdicional(detallesAdicionales);
+		                    return detalle;
+					   })
+					   .collect(Collectors.toList());
+					   
+			   	des.setDetalle(detalles);
+					
+			   return des;
+		   })
+		   .collect(Collectors.toList());
+		   guiaRemision.setDestinatario(guiaDestiRes);
+		   
 	        
 		//Prosesamos Guia 
 		InfoGuiaRemision infoGuiaRemision = new InfoGuiaRemision();
