@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.rolandopalermo.facturacion.ec.modelo.CampoAdicional;
-
+import com.rolandopalermo.facturacion.ec.modelo.Comprobante;
 import com.rolandopalermo.facturacion.ec.modelo.InfoTributaria;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,8 +26,6 @@ import lombok.Singular;
  */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @XmlRootElement(name = "guiaRemision")
 @XmlType(propOrder = {
 		"id",
@@ -37,24 +35,17 @@ import lombok.Singular;
 		"destinatario",
 		"campoAdicional"
 })
-public class GuiaRemision {
+public class GuiaRemision extends Comprobante {
 
-	private final String id;
-	private final String version;
-	private final InfoTributaria infoTributaria;
-	private final InfoGuiaRemision infoGuiaRemision;
-	private final List < Destinatario > destinatario;
-	@Singular("campoAdicional")
-	private final List<CampoAdicional> campoAdicional;
-
+	private  InfoGuiaRemision infoGuiaRemision;
+	private  List < Destinatario > destinatario;
 	@XmlElementWrapper(name = "destinatarios")
 	public List < Destinatario > getDestinatario() {
 		return destinatario;
 	}
 
-	@XmlElementWrapper(name = "infoAdicional")
-	public List<CampoAdicional> getCampoAdicional() {
-		return campoAdicional;
-	}
+	
+
+
 
 }
