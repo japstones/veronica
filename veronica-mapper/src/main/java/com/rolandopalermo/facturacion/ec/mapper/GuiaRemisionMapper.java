@@ -3,12 +3,9 @@ package com.rolandopalermo.facturacion.ec.mapper;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-
 import com.rolandopalermo.facturacion.ec.common.sri.ClaveDeAcceso;
 import com.rolandopalermo.facturacion.ec.common.util.DateUtils;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.DestinatarioDTO;
@@ -50,6 +47,8 @@ public class GuiaRemisionMapper extends AbstractComprobanteMapper<GuiaRemisionDT
 			des.setNumDocSustento(guiaDestinatario.getNumDocSustento());
 			des.setNumAutDocSustento(guiaDestinatario.getNumAutDocSustento());
 			des.setFechaEmisionDocSustento(guiaDestinatario.getFechaEmisionDocSustento());
+			
+			
 			List<GuiaDetallesDTO> guiaDetalleDTOS = guiaDestinatario.getDetalle();
 			List<GuiaDetalles> detalles = guiaDetalleDTOS.stream().map(guiaDetalleRes -> {
 				GuiaDetalles detalle = new GuiaDetalles();
@@ -57,6 +56,7 @@ public class GuiaRemisionMapper extends AbstractComprobanteMapper<GuiaRemisionDT
 				detalle.setCodigoAdicional(guiaDetalleRes.getCodigoAdicional());
 				detalle.setDescripcion(guiaDetalleRes.getDescripcion());
 				detalle.setCantidad(guiaDetalleRes.getCantidad());
+				
 				List<DetAdicionalDTO> detallesAdicionalesDTO = guiaDetalleRes.getDetAdicional();
 				List<DetAdicional> detallesAdicionales = detallesAdicionalesDTO.stream().map(detAdicionalDTO -> {
 					DetAdicional detAdicional = new DetAdicional();
@@ -67,7 +67,11 @@ public class GuiaRemisionMapper extends AbstractComprobanteMapper<GuiaRemisionDT
 				}).collect(Collectors.toList());
 				detalle.setDetAdicional(detallesAdicionales);
 				return detalle;
-			}).collect(Collectors.toList());
+				}).collect(Collectors.toList());
+			
+				
+				
+			
 
 			des.setDetalle(detalles);
 
@@ -90,42 +94,27 @@ public class GuiaRemisionMapper extends AbstractComprobanteMapper<GuiaRemisionDT
 		infoGuiaRemision.setPlaca(guiaRemisionDTO.getInfoGuiaRemisionDTO().getPlaca());
 		infoGuiaRemision.setRise(guiaRemisionDTO.getInfoGuiaRemisionDTO().getRise());
 
-	    StringBuilder sb = new StringBuilder(infoTributaria.getPtoEmi());
-        sb.append(infoTributaria.getEstab());
-        String serie = sb.toString();
-        String codigoNumerico = RandomStringUtils.randomNumeric(8);
-        String claveAcceso = "";
-        /*try {
-            claveAcceso = ClaveDeAcceso.builder()
-                    .fechaEmision(DateUtils.getFechaFromStringddMMyyyy(infoGuiaRemision.getFechaIniTransporte()))
-                    .ambiente(infoTributaria.getAmbiente())
-                    .codigoNumerico(codigoNumerico)
-                    .numeroComprobante(infoTributaria.getSecuencial())
-                    .ruc(infoTributaria.getRuc())
-                    .serie(serie)
-                    .tipoComprobante(infoTributaria.getCodDoc())
-                    .tipoEmision(infoTributaria.getTipoEmision())
-                    .build()
-                    .generarClaveAcceso();
-        } catch (ParseException e) {
-            logger.error("FacturaMapper", e);
-        }*/
-		try {
-			infoTributaria.setClaveAcceso(ClaveDeAcceso.builder()
-			        .fechaEmision(DateUtils.getFechaFromStringddMMyyyy(infoGuiaRemision.getFechaIniTransporte()))
-			        .ambiente(infoTributaria.getAmbiente())
-			        .codigoNumerico(codigoNumerico)
-			        .numeroComprobante(infoTributaria.getSecuencial())
-			        .ruc(infoTributaria.getRuc())
-			        .serie(serie)
-			        .tipoComprobante(infoTributaria.getCodDoc())
-			        .tipoEmision(infoTributaria.getTipoEmision())
-			        .build()
-			        .generarClaveAcceso());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 StringBuilder sb = new StringBuilder(infoTributaria.getPtoEmi());
+	        sb.append(infoTributaria.getEstab());
+	        String serie = sb.toString();
+	        String codigoNumerico = RandomStringUtils.randomNumeric(8);
+	        String claveAcceso = "";
+	        try {
+	            claveAcceso = ClaveDeAcceso.builder()
+	                    .fechaEmision(DateUtils.getFechaFromStringddMMyyyy(infoGuiaRemision.getFechaIniTransporte()))
+	                    .ambiente(infoTributaria.getAmbiente())
+	                    .codigoNumerico(codigoNumerico)
+	                    .numeroComprobante(infoTributaria.getSecuencial())
+	                    .ruc(infoTributaria.getRuc())
+	                    .serie(serie)
+	                    .tipoComprobante(infoTributaria.getCodDoc())
+	                    .tipoEmision(infoTributaria.getTipoEmision())
+	                    .build()
+	                    .generarClaveAcceso();
+	        } catch (ParseException e) {
+	            logger.error("RetencionMapper", e);
+	        }
+	    infoTributaria.setClaveAcceso(claveAcceso);
 		guiaRemision.setInfoTributaria(infoTributaria);
 		guiaRemision.setInfoGuiaRemision(infoGuiaRemision);
 		guiaRemision.setDestinatario(guiaDestiRes);
