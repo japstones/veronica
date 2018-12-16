@@ -17,7 +17,7 @@ public class GuiaRemisionDTO extends ComprobanteDTO {
 		
 		 private InfoGuiaRemisionDTO infoGuiaRemisionDTO;
 		 private  List <DestinatarioDTO> destinatario;
-	
+		
 	 
 	
 

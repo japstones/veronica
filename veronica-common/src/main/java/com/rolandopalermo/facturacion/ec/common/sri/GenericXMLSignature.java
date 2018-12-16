@@ -44,7 +44,6 @@ import java.util.List;
 @Setter
 @Getter
 public abstract class GenericXMLSignature {
-
 	/**
 	 * <p>
 	 * Almacén PKCS12 con el que se desea realizar la firma

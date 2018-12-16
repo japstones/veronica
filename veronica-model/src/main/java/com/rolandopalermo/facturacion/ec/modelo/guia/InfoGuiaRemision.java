@@ -33,5 +33,7 @@ public class InfoGuiaRemision {
 	protected String fechaIniTransporte;
 	protected String fechaFinTransporte;
 	protected String placa;
+	
+	
 
 }
