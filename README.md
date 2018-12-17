@@ -67,7 +67,7 @@ https://documenter.getpostman.com/view/1388083/RzZCDHct
 
 - [POST /api/v1/generar/factura](#post-apiv1generarfactura)
 - [POST /api/v1/generar/retencion](#post-apiv1generarretencion)
-- [POST /api/v1/generar/guia-remision](#post-apiv1generarguiaremision)
+- [POST /api/v1/generar/guia-remision](#post-apiv1generarguia-remision)
 - [POST /api/v1/firmar/factura](#post-apiv1firmarfactura)
 - [POST /api/v1/sri/enviar/factura](#post-apiv1srienviarfactura)
 - [POST /api/v1/sri/autorizar](#post-apiv1sriautorizar)
