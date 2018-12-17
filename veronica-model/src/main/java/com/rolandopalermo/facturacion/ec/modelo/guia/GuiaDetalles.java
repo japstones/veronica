@@ -7,6 +7,7 @@ package com.rolandopalermo.facturacion.ec.modelo.guia;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -31,6 +32,12 @@ public class GuiaDetalles {
     protected String codigoAdicional;
     protected String descripcion;
     protected BigDecimal cantidad;
-    private List<DetAdicional> detAdicional;
+    protected List<DetAdicional> detAdicional;
+    
+    @XmlElementWrapper(name="detallesAdicionales")
+    public List<DetAdicional> getDetAdicional() {
+        return detAdicional;
+    }
+    
 
 }

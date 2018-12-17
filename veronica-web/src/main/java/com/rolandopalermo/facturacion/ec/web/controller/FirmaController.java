@@ -4,8 +4,10 @@ import com.rolandopalermo.facturacion.ec.bo.FirmadorBO;
 import com.rolandopalermo.facturacion.ec.common.exception.InternalServerException;
 import com.rolandopalermo.facturacion.ec.common.exception.ResourceNotFoundException;
 import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
+import com.rolandopalermo.facturacion.ec.dto.comprobantes.GuiaRemisionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.ByteArrayResponseDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.FacturaRequestDTO;
+import com.rolandopalermo.facturacion.ec.dto.rest.GuiaRemisionRequestDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RetencionRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +40,7 @@ public class FirmaController {
 	@ApiOperation(value = "Firma un comprobante electrónico")
 	@PostMapping(value = "/factura", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ByteArrayResponseDTO> firmarFactura(
-			@Valid @ApiParam(value = "Comprobante electrónico codificado como base64", required = true) @RequestBody FacturaRequestDTO request) {
+			 @ApiParam(value = "Comprobante electrónico codificado como base64", required = true) @RequestBody FacturaRequestDTO request) {
 		byte[] content = new byte[0];
 		try {
 			if (!new File(request.getRutaArchivoPkcs12()).exists()) {
@@ -55,7 +57,7 @@ public class FirmaController {
 	@ApiOperation(value = "Firma un comprobante de retención")
 	@PostMapping(value = "/retencion", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ByteArrayResponseDTO> firmarRetencion(
-			@Valid @ApiParam(value = "Comprobante electrónico codificado como base64", required = true) @RequestBody RetencionRequestDTO request) {
+			@ApiParam(value = "Comprobante electrónico codificado como base64", required = true) @RequestBody RetencionRequestDTO request) {
 		byte[] content = new byte[0];
 		try {
 			if (!new File(request.getRutaArchivoPkcs12()).exists()) {
@@ -64,6 +66,23 @@ public class FirmaController {
 			content = firmadorBO.firmarRetencion(request);
 		} catch (VeronicaException | JAXBException | IOException e) {
 			logger.error("firmarRetencion", e);
+			throw new InternalServerException(e.getMessage());
+		}
+		return new ResponseEntity<ByteArrayResponseDTO>(new ByteArrayResponseDTO(content), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Firma un comprobante de Guia Remsion")
+	@PostMapping(value = "/guia-remision", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ByteArrayResponseDTO> firmarRemision(
+			 @ApiParam(value = "Comprobante electrónico codificado como base64", required = true) @RequestBody GuiaRemisionRequestDTO request) {
+		byte[] content = new byte[0];
+		try {
+			if (!new File(request.getRutaArchivoPkcs12()).exists()) {
+				throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
+			}
+			content = firmadorBO.firmarGuiaRemision(request);
+		} catch (VeronicaException | JAXBException | IOException e) {
+			logger.error("firmarGuiaRemision", e);
 			throw new InternalServerException(e.getMessage());
 		}
 		return new ResponseEntity<ByteArrayResponseDTO>(new ByteArrayResponseDTO(content), HttpStatus.OK);

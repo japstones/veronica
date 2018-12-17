@@ -73,6 +73,7 @@ public class FacturaMapper extends AbstractComprobanteMapper<FacturaDTO, Factura
                                 return detAdicional;
                             })
                             .collect(Collectors.toList());
+                    
                     List<ImpuestoDTO> impuestosDTO = detalle.getImpuesto();
                     List<com.rolandopalermo.facturacion.ec.modelo.Impuesto> impuestos = impuestosDTO.stream()
                             .map(impuestoDTO -> {
@@ -121,7 +122,7 @@ public class FacturaMapper extends AbstractComprobanteMapper<FacturaDTO, Factura
         factura.setInfoFactura(infoFactura);
 
         factura.setDetalle(detalles);
-
+        
         StringBuilder sb = new StringBuilder(infoTributaria.getPtoEmi());
         sb.append(infoTributaria.getEstab());
         String serie = sb.toString();
@@ -140,7 +141,7 @@ public class FacturaMapper extends AbstractComprobanteMapper<FacturaDTO, Factura
                     .build()
                     .generarClaveAcceso();
         } catch (ParseException e) {
-            logger.error("FacturaMapper", e);
+            logger.error("RetencionMapper", e);
         }
         infoTributaria.setClaveAcceso(claveAcceso);
         factura.setInfoTributaria(infoTributaria);

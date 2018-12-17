@@ -4,15 +4,18 @@ import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import com.rolandopalermo.facturacion.ec.common.util.FileUtils;
 import com.rolandopalermo.facturacion.ec.common.util.JaxbUtils;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDTO;
+import com.rolandopalermo.facturacion.ec.dto.comprobantes.GuiaRemisionDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.RetencionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.GenericComprobanteRequestDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaComprobanteDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaSolicitudDTO;
 import com.rolandopalermo.facturacion.ec.mapper.FacturaMapper;
+import com.rolandopalermo.facturacion.ec.mapper.GuiaRemisionMapper;
 import com.rolandopalermo.facturacion.ec.mapper.RespuestaComprobanteMapper;
 import com.rolandopalermo.facturacion.ec.mapper.RespuestaSolicitudMapper;
 import com.rolandopalermo.facturacion.ec.mapper.RetencionMapper;
 import com.rolandopalermo.facturacion.ec.modelo.factura.Factura;
+import com.rolandopalermo.facturacion.ec.modelo.guia.GuiaRemision;
 import com.rolandopalermo.facturacion.ec.modelo.retencion.ComprobanteRetencion;
 import com.rolandopalermo.facturacion.ec.soap.client.AutorizacionComprobanteProxy;
 import com.rolandopalermo.facturacion.ec.soap.client.EnvioComprobantesProxy;
@@ -42,6 +45,8 @@ public class SriBO {
     @Autowired
     private RetencionMapper retencionMapper;
     @Autowired
+    private GuiaRemisionMapper guiaRemisionMapper;
+    @Autowired
     private GeneradorBO generadorBO;
 
     public RespuestaSolicitudDTO enviarComprobante(GenericComprobanteRequestDTO comprobanteDTO, String wsdlRecepcion) throws IOException, JAXBException, VeronicaException {
@@ -59,6 +64,12 @@ public class SriBO {
             ComprobanteRetencion retencion = retencionMapper.toModel((RetencionDTO) comprobanteDTO.getComprobanteAsObj());
             claveAcceso = retencion.getInfoTributaria().getClaveAcceso();
             JaxbUtils.marshall(retencion, rutaArchivoXML);
+            
+            
+        }else if(comprobanteDTO.getComprobanteAsObj() instanceof GuiaRemisionDTO) {
+            GuiaRemision guiaRemision = guiaRemisionMapper.toModel((GuiaRemisionDTO) comprobanteDTO.getComprobanteAsObj());
+            claveAcceso = guiaRemision.getInfoTributaria().getClaveAcceso();
+            JaxbUtils.marshall(guiaRemision, rutaArchivoXML);
         }
         // Actividad 3.- Firmar el archivo
         byte[] xml = firmadorBO.firnarComprobanteElectronico(FileUtils.convertirArchivoAByteArray(temp),

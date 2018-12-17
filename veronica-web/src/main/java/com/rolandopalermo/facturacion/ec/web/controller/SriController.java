@@ -6,6 +6,7 @@ import com.rolandopalermo.facturacion.ec.common.exception.ResourceNotFoundExcept
 import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import com.rolandopalermo.facturacion.ec.dto.rest.ClaveAccesoDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.FacturaRequestDTO;
+import com.rolandopalermo.facturacion.ec.dto.rest.GuiaRemisionRequestDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaComprobanteDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaSolicitudDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RetencionRequestDTO;
@@ -74,7 +75,24 @@ public class SriController {
 		}
 		return new ResponseEntity<RespuestaSolicitudDTO>(respuestaSolicitudDTO, HttpStatus.OK);
 	}
-
+	@ApiOperation(value = "Envía un comprobante de Guia de remision a validar al SRI")
+	@PostMapping(value = "/enviar/guia-remision", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RespuestaSolicitudDTO> enviarGuiaRemision(
+			 @ApiParam(value = "Comprobante electrónico", required = true) @RequestBody GuiaRemisionRequestDTO request) {
+		if (!new File(request.getRutaArchivoPkcs12()).exists()) {
+			throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
+		}
+		RespuestaSolicitudDTO respuestaSolicitudDTO = new RespuestaSolicitudDTO();
+		try {
+			respuestaSolicitudDTO = sriBO.enviarComprobante(request, wsdlRecepcion);
+		} catch (IOException | JAXBException | VeronicaException e) {
+			logger.error("enviarRetencion", e);
+			throw new InternalServerException(e.getMessage());
+		}
+		return new ResponseEntity<RespuestaSolicitudDTO>(respuestaSolicitudDTO, HttpStatus.OK);
+	}
+	
+	
 	@ApiOperation(value = "Autoriza un comprobante electrónico")
 	@PostMapping(value = "/autorizar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaComprobanteDTO> autorizarComprobante(
