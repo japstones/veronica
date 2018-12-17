@@ -67,6 +67,7 @@ https://documenter.getpostman.com/view/1388083/RzZCDHct
 
 - [POST /api/v1/generar/factura](#post-apiv1generarfactura)
 - [POST /api/v1/generar/retencion](#post-apiv1generarretencion)
+- [POST /api/v1/generar/guia-remision](#post-apiv1generarguiaremision)
 - [POST /api/v1/firmar/factura](#post-apiv1firmarfactura)
 - [POST /api/v1/sri/enviar/factura](#post-apiv1srienviarfactura)
 - [POST /api/v1/sri/autorizar](#post-apiv1sriautorizar)
@@ -287,6 +288,98 @@ Response body:
 ```
 {
     "content": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8Y29tcHJvYmFudGVSZXRlbmNpb24gaWQ9ImNvbXByb2JhbnRlIiB2ZXJzaW9uPSIxLjAuMCI+CiAgICA8aW5mb1RyaWJ1dGFyaWE+CiAgICAgICAgPGFtYmllbnRlPjE8L2FtYmllbnRlPgogICAgICAgIDx0aXBvRW1pc2lvbj4xPC90aXBvRW1pc2lvbj4KICAgICAgICA8cmF6b25Tb2NpYWw+RGlzdHJpYnVpZG9yYSBkZSBTdW1pbmlzdHJvcyBOYWNpb25hbCBTLkEuPC9yYXpvblNvY2lhbD4KICAgICAgICA8bm9tYnJlQ29tZXJjaWFsPkVtcHJlc2EgSW1wb3J0YWRvcmEgeSBFeHBvcnRhZG9yYSBkZSBQaWV6YXM8L25vbWJyZUNvbWVyY2lhbD4KICAgICAgICA8cnVjPjE3OTIxNDY3MzkwMDE8L3J1Yz4KICAgICAgICA8Y2xhdmVBY2Nlc28+MTUwMTIwMTIwMTE3OTIxNDY3MzkwMDExMDAxMDAyMDAwMDAwMDAxNTg5ODY5NDExMTwvY2xhdmVBY2Nlc28+CiAgICAgICAgPGNvZERvYz4wMTwvY29kRG9jPgogICAgICAgIDxlc3RhYj4wMDI8L2VzdGFiPgogICAgICAgIDxwdG9FbWk+MDAxPC9wdG9FbWk+CiAgICAgICAgPHNlY3VlbmNpYWw+MDAwMDAwMDAxPC9zZWN1ZW5jaWFsPgogICAgICAgIDxkaXJNYXRyaXo+RW5yaXF1ZSBHdWVycmVybyBQb3J0aWxsYSBPRTEtMzQgQVYuIEdhbG8gUGxhemEgTGFzc288L2Rpck1hdHJpej4KICAgIDwvaW5mb1RyaWJ1dGFyaWE+CiAgICA8aW5mb0NvbXBSZXRlbmNpb24+CiAgICAgICAgPGZlY2hhRW1pc2lvbj4xNS8wMS8yMDEyPC9mZWNoYUVtaXNpb24+CiAgICAgICAgPGRpckVzdGFibGVjaW1pZW50bz5Sb2RyaWdvIE1vcmVubyBTL04gRnJhbmNpc2NvIEdhcmPDrWE8L2RpckVzdGFibGVjaW1pZW50bz4KICAgICAgICA8Y29udHJpYnV5ZW50ZUVzcGVjaWFsPjUzNjg8L2NvbnRyaWJ1eWVudGVFc3BlY2lhbD4KICAgICAgICA8b2JsaWdhZG9Db250YWJpbGlkYWQ+U0k8L29ibGlnYWRvQ29udGFiaWxpZGFkPgogICAgICAgIDx0aXBvSWRlbnRpZmljYWNpb25TdWpldG9SZXRlbmlkbz4wNDwvdGlwb0lkZW50aWZpY2FjaW9uU3VqZXRvUmV0ZW5pZG8+CiAgICAgICAgPHJhem9uU29jaWFsU3VqZXRvUmV0ZW5pZG8+SnVhbiBQYWJsbyBDaMOhdmV6IE7DusOxZXo8L3Jhem9uU29jaWFsU3VqZXRvUmV0ZW5pZG8+CiAgICAgICAgPHBlcmlvZG9GaXNjYWw+MDMvMjAxMjwvcGVyaW9kb0Zpc2NhbD4KICAgIDwvaW5mb0NvbXBSZXRlbmNpb24+CiAgICA8aW1wdWVzdG9zPgogICAgICAgIDxpbXB1ZXN0bz4KICAgICAgICAgICAgPGNvZGlnbz4yPC9jb2RpZ28+CiAgICAgICAgICAgIDxjb2RpZ29SZXRlbmNpb24+MTwvY29kaWdvUmV0ZW5jaW9uPgogICAgICAgICAgICA8YmFzZUltcG9uaWJsZT4xMDEuOTQ8L2Jhc2VJbXBvbmlibGU+CiAgICAgICAgICAgIDxwb3JjZW50YWplUmV0ZW5lcj4zMDwvcG9yY2VudGFqZVJldGVuZXI+CiAgICAgICAgICAgIDx2YWxvclJldGVuaWRvPjMwLjU4PC92YWxvclJldGVuaWRvPgogICAgICAgICAgICA8Y29kRG9jU3VzdGVudG8+MDE8L2NvZERvY1N1c3RlbnRvPgogICAgICAgICAgICA8bnVtRG9jU3VzdGVudG8+MDAyMDAxMDAwMDAwMDAxPC9udW1Eb2NTdXN0ZW50bz4KICAgICAgICAgICAgPGZlY2hhRW1pc2lvbkRvY1N1c3RlbnRvPjIwLzAxLzIwMTI8L2ZlY2hhRW1pc2lvbkRvY1N1c3RlbnRvPgogICAgICAgIDwvaW1wdWVzdG8+CiAgICAgICAgPGltcHVlc3RvPgogICAgICAgICAgICA8Y29kaWdvPjE8L2NvZGlnbz4KICAgICAgICAgICAgPGNvZGlnb1JldGVuY2lvbj4zMjNCMTwvY29kaWdvUmV0ZW5jaW9uPgogICAgICAgICAgICA8YmFzZUltcG9uaWJsZT4xMDkwNC41MDwvYmFzZUltcG9uaWJsZT4KICAgICAgICAgICAgPHBvcmNlbnRhamVSZXRlbmVyPjI8L3BvcmNlbnRhamVSZXRlbmVyPgogICAgICAgICAgICA8dmFsb3JSZXRlbmlkbz4yMTguMDk8L3ZhbG9yUmV0ZW5pZG8+CiAgICAgICAgICAgIDxjb2REb2NTdXN0ZW50bz4wMTwvY29kRG9jU3VzdGVudG8+CiAgICAgICAgICAgIDxudW1Eb2NTdXN0ZW50bz4wMDIwMDEwMDAwMDAwMDE8L251bURvY1N1c3RlbnRvPgogICAgICAgICAgICA8ZmVjaGFFbWlzaW9uRG9jU3VzdGVudG8+MjAvMDEvMjAxMjwvZmVjaGFFbWlzaW9uRG9jU3VzdGVudG8+CiAgICAgICAgPC9pbXB1ZXN0bz4KICAgICAgICA8aW1wdWVzdG8+CiAgICAgICAgICAgIDxjb2RpZ28+NjwvY29kaWdvPgogICAgICAgICAgICA8Y29kaWdvUmV0ZW5jaW9uPjQ1ODA8L2NvZGlnb1JldGVuY2lvbj4KICAgICAgICAgICAgPGJhc2VJbXBvbmlibGU+MjAwMDwvYmFzZUltcG9uaWJsZT4KICAgICAgICAgICAgPHBvcmNlbnRhamVSZXRlbmVyPjU8L3BvcmNlbnRhamVSZXRlbmVyPgogICAgICAgICAgICA8dmFsb3JSZXRlbmlkbz4xMDA8L3ZhbG9yUmV0ZW5pZG8+CiAgICAgICAgICAgIDxjb2REb2NTdXN0ZW50bz4xMjwvY29kRG9jU3VzdGVudG8+CiAgICAgICAgICAgIDxudW1Eb2NTdXN0ZW50bz4wMDIwMDEwMDAwMDAwMDE8L251bURvY1N1c3RlbnRvPgogICAgICAgICAgICA8ZmVjaGFFbWlzaW9uRG9jU3VzdGVudG8+MjAvMDEvMjAxMjwvZmVjaGFFbWlzaW9uRG9jU3VzdGVudG8+CiAgICAgICAgPC9pbXB1ZXN0bz4KICAgIDwvaW1wdWVzdG9zPgogICAgPGluZm9BZGljaW9uYWw+CiAgICAgICAgPGNhbXBvQWRpY2lvbmFsIG5vbWJyZT0iQ29udmVuaW9Eb2JsZVRyaWJ1dGFjaW9uIj5NQTEyMzQ1NjwvY2FtcG9BZGljaW9uYWw+CiAgICAgICAgPGNhbXBvQWRpY2lvbmFsIG5vbWJyZT0iZG9jdW1lbnRvSUZJUyI+QlAyMDEwLTAxLTAwMTQ8L2NhbXBvQWRpY2lvbmFsPgogICAgICAgIDxjYW1wb0FkaWNpb25hbCBub21icmU9InZhbG9ycGFnYWRvSVJzb2NpZWRhZGRpdmlkZW5kb3MiPjIwMDAwPC9jYW1wb0FkaWNpb25hbD4KICAgIDwvaW5mb0FkaWNpb25hbD4KPC9jb21wcm9iYW50ZVJldGVuY2lvbj4K"
+}
+```
+
+### POST /api/v1/generar/guia-remision
+Example: http://localhost:8080/veronica/api/v1/generar/guia-remision
+Request body:
+```
+{
+   "id":"comprobante",
+   "version":"1.1.0",
+   "infoTributaria":{
+      "ambiente":"1",
+      "codDoc":"06",
+      "dirMatriz":"ALPALLANA",
+      "estab":"001",
+      "nombreComercial":"EMPRESA PUBLICA DE HIDROCARBUROS DEL ECUADOR EP PETROECUADOR",
+      "ptoEmi":"501",
+      "razonSocial":"EMPRESA PUBLICA DE HIDROCARBUROS DEL ECUADOR EP PETROECUADOR",
+      "ruc":"1760013210001",
+      "secuencial":"000000008",
+      "tipoEmision":"1"
+   },
+   "infoGuiaRemisionDTO":{
+      "contribuyenteEspecial":"5368",
+      "dirEstablecimiento":"ALPALLANA",
+      "dirPartida":"Av. Eloy Alfaro 34 y Av. Libertad Esq",
+      "fechaFinTransporte":"20/11/2018",
+      "fechaIniTransporte":"19/11/2018",
+      "obligadoContabilidad":"SI",
+      "placa":"MCL0827",
+      "razonSocialTransportista":"Transportes S.A",
+      "rise":"Contribuyente Regimen Simplificado RISE",
+      "rucTransportista":"1796875790001",
+      "tipoIdentificacionTransportista":"04"
+   },
+   "destinatario":[
+      {
+         "codDocSustento":"01",
+         "codEstabDestino":"001",
+         "detalle":[
+            {
+               "cantidad":10.254632,
+               "codigoAdicional":"1234D56789-A",
+               "codigoInterno":"125BJC-01",
+               "descripcion":"DIESEL",
+               "detAdicional":[
+                  {
+                     "nombre":"ABCD",
+                     "valor":"EFGH"
+                  },
+                  {
+                     "nombre":"ABCD",
+                     "valor":"EFGH"
+                  },
+                  {
+                     "nombre":"ABCD",
+                     "valor":"EFGH"
+                  }
+               ]
+            }
+         ],
+         "dirDestinatario":"Av. Simón Bolívar S/N Intercambiador",
+         "docAduaneroUnico":"0041324846887",
+         "fechaEmisionDocSustento":"19/11/2018",
+         "identificacionDestinatario":"1716849140001",
+         "motivoTraslado":"Venta de Maquinaria de Impresión",
+         "numAutDocSustento":"2110201116302517921467390011234567891",
+         "numDocSustento":"002-001-000000001",
+         "razonSocialDestinatario":"Alvarez Mina John Henry",
+         "ruta":"Quito – Cayambe - Otavalo"
+      }
+   ],
+   "campoAdicional":[
+      {
+         "nombre":"TELEFONO",
+         "value":"098568541"
+      },
+      {
+         "nombre":"E-MAIL",
+         "value":"info@organizacion.com"
+      },
+      {
+         "nombre":"SUCURSAL 03",
+         "value":"Guayaquil–12 de Octubre y Universo"
+      }
+   ]
+}
+```
+Response body:
+```
+{
+    "content": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8Z3VpYVJlbWlzaW9uIGlkPSJjb21wcm9iYW50ZSIgdmVyc2lvbj0iMS4xLjAiPgogICAgPGluZm9UcmlidXRhcmlhPgogICAgICAgIDxhbWJpZW50ZT4xPC9hbWJpZW50ZT4KICAgICAgICA8dGlwb0VtaXNpb24+MTwvdGlwb0VtaXNpb24+CiAgICAgICAgPHJhem9uU29jaWFsPkVNUFJFU0EgUFVCTElDQSBERSBISURST0NBUkJVUk9TIERFTCBFQ1VBRE9SIEVQIFBFVFJPRUNVQURPUjwvcmF6b25Tb2NpYWw+CiAgICAgICAgPG5vbWJyZUNvbWVyY2lhbD5FTVBSRVNBIFBVQkxJQ0EgREUgSElEUk9DQVJCVVJPUyBERUwgRUNVQURPUiBFUCBQRVRST0VDVUFET1I8L25vbWJyZUNvbWVyY2lhbD4KICAgICAgICA8cnVjPjE3NjAwMTMyMTAwMDE8L3J1Yz4KICAgICAgICA8Y2xhdmVBY2Nlc28+MTkxMTIwMTgwNjE3NjAwMTMyMTAwMDExNTAxMDAxMDAwMDAwMDA4NTk4ODA4ODYxMzwvY2xhdmVBY2Nlc28+CiAgICAgICAgPGNvZERvYz4wNjwvY29kRG9jPgogICAgICAgIDxlc3RhYj4wMDE8L2VzdGFiPgogICAgICAgIDxwdG9FbWk+NTAxPC9wdG9FbWk+CiAgICAgICAgPHNlY3VlbmNpYWw+MDAwMDAwMDA4PC9zZWN1ZW5jaWFsPgogICAgICAgIDxkaXJNYXRyaXo+QUxQQUxMQU5BPC9kaXJNYXRyaXo+CiAgICA8L2luZm9UcmlidXRhcmlhPgogICAgPGluZm9HdWlhUmVtaXNpb24+CiAgICAgICAgPGRpckVzdGFibGVjaW1pZW50bz5BTFBBTExBTkE8L2RpckVzdGFibGVjaW1pZW50bz4KICAgICAgICA8ZGlyUGFydGlkYT5Bdi4gRWxveSBBbGZhcm8gMzQgeSBBdi4gTGliZXJ0YWQgRXNxPC9kaXJQYXJ0aWRhPgogICAgICAgIDxyYXpvblNvY2lhbFRyYW5zcG9ydGlzdGE+VHJhbnNwb3J0ZXMgUy5BPC9yYXpvblNvY2lhbFRyYW5zcG9ydGlzdGE+CiAgICAgICAgPHRpcG9JZGVudGlmaWNhY2lvblRyYW5zcG9ydGlzdGE+MDQ8L3RpcG9JZGVudGlmaWNhY2lvblRyYW5zcG9ydGlzdGE+CiAgICAgICAgPHJ1Y1RyYW5zcG9ydGlzdGE+MTc5Njg3NTc5MDAwMTwvcnVjVHJhbnNwb3J0aXN0YT4KICAgICAgICA8cmlzZT5Db250cmlidXllbnRlIFJlZ2ltZW4gU2ltcGxpZmljYWRvIFJJU0U8L3Jpc2U+CiAgICAgICAgPG9ibGlnYWRvQ29udGFiaWxpZGFkPlNJPC9vYmxpZ2Fkb0NvbnRhYmlsaWRhZD4KICAgICAgICA8Y29udHJpYnV5ZW50ZUVzcGVjaWFsPjUzNjg8L2NvbnRyaWJ1eWVudGVFc3BlY2lhbD4KICAgICAgICA8ZmVjaGFJbmlUcmFuc3BvcnRlPjE5LzExLzIwMTg8L2ZlY2hhSW5pVHJhbnNwb3J0ZT4KICAgICAgICA8ZmVjaGFGaW5UcmFuc3BvcnRlPjIwLzExLzIwMTg8L2ZlY2hhRmluVHJhbnNwb3J0ZT4KICAgICAgICA8cGxhY2E+TUNMMDgyNzwvcGxhY2E+CiAgICA8L2luZm9HdWlhUmVtaXNpb24+CiAgICA8ZGVzdGluYXRhcmlvcz4KICAgICAgICA8ZGVzdGluYXRhcmlvPgogICAgICAgICAgICA8aWRlbnRpZmljYWNpb25EZXN0aW5hdGFyaW8+MTcxNjg0OTE0MDAwMTwvaWRlbnRpZmljYWNpb25EZXN0aW5hdGFyaW8+CiAgICAgICAgICAgIDxyYXpvblNvY2lhbERlc3RpbmF0YXJpbz5BbHZhcmV6IE1pbmEgSm9obiBIZW5yeTwvcmF6b25Tb2NpYWxEZXN0aW5hdGFyaW8+CiAgICAgICAgICAgIDxkaXJEZXN0aW5hdGFyaW8+QXYuIFNpbcOzbiBCb2zDrXZhciBTL04gSW50ZXJjYW1iaWFkb3I8L2RpckRlc3RpbmF0YXJpbz4KICAgICAgICAgICAgPG1vdGl2b1RyYXNsYWRvPlZlbnRhIGRlIE1hcXVpbmFyaWEgZGUgSW1wcmVzacOzbjwvbW90aXZvVHJhc2xhZG8+CiAgICAgICAgICAgIDxkb2NBZHVhbmVyb1VuaWNvPjAwNDEzMjQ4NDY4ODc8L2RvY0FkdWFuZXJvVW5pY28+CiAgICAgICAgICAgIDxjb2RFc3RhYkRlc3Rpbm8+MDAxPC9jb2RFc3RhYkRlc3Rpbm8+CiAgICAgICAgICAgIDxydXRhPlF1aXRvIOKAkyBDYXlhbWJlIC0gT3RhdmFsbzwvcnV0YT4KICAgICAgICAgICAgPGNvZERvY1N1c3RlbnRvPjAxPC9jb2REb2NTdXN0ZW50bz4KICAgICAgICAgICAgPG51bURvY1N1c3RlbnRvPjAwMi0wMDEtMDAwMDAwMDAxPC9udW1Eb2NTdXN0ZW50bz4KICAgICAgICAgICAgPG51bUF1dERvY1N1c3RlbnRvPjIxMTAyMDExMTYzMDI1MTc5MjE0NjczOTAwMTEyMzQ1Njc4OTE8L251bUF1dERvY1N1c3RlbnRvPgogICAgICAgICAgICA8ZmVjaGFFbWlzaW9uRG9jU3VzdGVudG8+MTkvMTEvMjAxODwvZmVjaGFFbWlzaW9uRG9jU3VzdGVudG8+CiAgICAgICAgICAgIDxkZXRhbGxlcz4KICAgICAgICAgICAgICAgIDxkZXRhbGxlPgogICAgICAgICAgICAgICAgICAgIDxjb2RpZ29JbnRlcm5vPjEyNUJKQy0wMTwvY29kaWdvSW50ZXJubz4KICAgICAgICAgICAgICAgICAgICA8Y29kaWdvQWRpY2lvbmFsPjEyMzRENTY3ODktQTwvY29kaWdvQWRpY2lvbmFsPgogICAgICAgICAgICAgICAgICAgIDxkZXNjcmlwY2lvbj5ESUVTRUw8L2Rlc2NyaXBjaW9uPgogICAgICAgICAgICAgICAgICAgIDxjYW50aWRhZD4xMC4yNTQ2MzI8L2NhbnRpZGFkPgogICAgICAgICAgICAgICAgICAgIDxkZXRhbGxlc0FkaWNpb25hbGVzPgogICAgICAgICAgICAgICAgICAgICAgICA8ZGV0QWRpY2lvbmFsIG5vbWJyZT0iQUJDRCIgdmFsb3I9IkVGR0giLz4KICAgICAgICAgICAgICAgICAgICAgICAgPGRldEFkaWNpb25hbCBub21icmU9IkFCQ0QiIHZhbG9yPSJFRkdIIi8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxkZXRBZGljaW9uYWwgbm9tYnJlPSJBQkNEIiB2YWxvcj0iRUZHSCIvPgogICAgICAgICAgICAgICAgICAgIDwvZGV0YWxsZXNBZGljaW9uYWxlcz4KICAgICAgICAgICAgICAgIDwvZGV0YWxsZT4KICAgICAgICAgICAgPC9kZXRhbGxlcz4KICAgICAgICA8L2Rlc3RpbmF0YXJpbz4KICAgIDwvZGVzdGluYXRhcmlvcz4KICAgIDxpbmZvQWRpY2lvbmFsPgogICAgICAgIDxjYW1wb0FkaWNpb25hbCBub21icmU9IlRFTEVGT05PIj4wOTg1Njg1NDE8L2NhbXBvQWRpY2lvbmFsPgogICAgICAgIDxjYW1wb0FkaWNpb25hbCBub21icmU9IkUtTUFJTCI+aW5mb0Bvcmdhbml6YWNpb24uY29tPC9jYW1wb0FkaWNpb25hbD4KICAgICAgICA8Y2FtcG9BZGljaW9uYWwgbm9tYnJlPSJTVUNVUlNBTCAwMyI+R3VheWFxdWls4oCTMTIgZGUgT2N0dWJyZSB5IFVuaXZlcnNvPC9jYW1wb0FkaWNpb25hbD4KICAgIDwvaW5mb0FkaWNpb25hbD4KPC9ndWlhUmVtaXNpb24+Cg=="
 }
 ```
 

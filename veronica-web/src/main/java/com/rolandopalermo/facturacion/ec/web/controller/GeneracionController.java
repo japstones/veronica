@@ -68,8 +68,8 @@ public class GeneracionController {
 
     
    
-    @ApiOperation(value = "Genera una guia de remision en formato XML")
-    @PostMapping(value = "/guia-remicion", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Genera una guia de remisión en formato XML")
+    @PostMapping(value = "/guia-remision", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ByteArrayResponseDTO> generarGuiaRmision(@Valid @ApiParam(value = API_DOC_ANEXO_1, required = true) @RequestBody GuiaRemisionDTO request) {
         byte[] content = new byte[0];
         try {
