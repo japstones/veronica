@@ -293,6 +293,7 @@ Response body:
 
 ### POST /api/v1/generar/guia-remision
 Example: http://localhost:8080/veronica/api/v1/generar/guia-remision
+
 Request body:
 ```
 {
