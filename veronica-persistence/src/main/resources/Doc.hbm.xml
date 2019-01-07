@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+	package="com.rolandopalermo.facturacion.ec.entity">
+	<class name="Doc" table="doc">
+		<id name="idBill" column="cod_doc">
+			<generator class="increment" />
+		</id>
+		<property name="keyBill" column="key_doc" />
+		<property name="dateIssueBill" column="date_doc" />
+		<property name="xmlBill" column="xml_doc" />
+		<property name="statusBill" column="status_doc" />
+		<property name="typeBill" column="type_doc" />
+
+
+	</class>
+</hibernate-mapping>
