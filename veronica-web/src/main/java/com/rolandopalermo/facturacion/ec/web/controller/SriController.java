@@ -51,6 +51,7 @@ public class SriController {
 			throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
 		}
 		try {
+
 			return new ResponseEntity<RespuestaSolicitudDTO>(sriBO.enviarComprobante(request, wsdlRecepcion),
 					HttpStatus.OK);
 		} catch (IOException | JAXBException | VeronicaException e) {
@@ -75,10 +76,11 @@ public class SriController {
 		}
 		return new ResponseEntity<RespuestaSolicitudDTO>(respuestaSolicitudDTO, HttpStatus.OK);
 	}
+
 	@ApiOperation(value = "Envía un comprobante de Guia de remision a validar al SRI")
 	@PostMapping(value = "/enviar/guia-remision", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaSolicitudDTO> enviarGuiaRemision(
-			 @ApiParam(value = "Comprobante electrónico", required = true) @RequestBody GuiaRemisionRequestDTO request) {
+			@ApiParam(value = "Comprobante electrónico", required = true) @RequestBody GuiaRemisionRequestDTO request) {
 		if (!new File(request.getRutaArchivoPkcs12()).exists()) {
 			throw new ResourceNotFoundException("No se pudo encontrar el certificado de firma digital.");
 		}
@@ -91,8 +93,7 @@ public class SriController {
 		}
 		return new ResponseEntity<RespuestaSolicitudDTO>(respuestaSolicitudDTO, HttpStatus.OK);
 	}
-	
-	
+
 	@ApiOperation(value = "Autoriza un comprobante electrónico")
 	@PostMapping(value = "/autorizar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaComprobanteDTO> autorizarComprobante(

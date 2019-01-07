@@ -5,7 +5,10 @@ import com.rolandopalermo.facturacion.ec.common.exception.InternalServerExceptio
 import com.rolandopalermo.facturacion.ec.common.exception.ResourceNotFoundException;
 import com.rolandopalermo.facturacion.ec.dto.rest.AutorizacionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaComprobanteDTO;
+import com.rolandopalermo.facturacion.ec.entity.Doc;
 import com.rolandopalermo.facturacion.ec.ride.RIDEGenerator;
+import com.rolandopalermo.facturacion.ec.service.DocServiceImp;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,6 +34,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -38,12 +42,15 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/api/v1/ride")
 @Api(description = "Genera la RIDE de un comprobante electrónico como XML.")
+
 public class RideController {
 
 	private static final Logger logger = Logger.getLogger(RideController.class);
 
 	@Autowired
 	private SriBO sriBO;
+	@Autowired
+	private DocServiceImp saveBill;
 
 	@Value("${sri.wsdl.autorizacion}")
 	private String wsdlAutorizacion;
@@ -89,5 +96,40 @@ public class RideController {
 				.contentType(MediaType.parseMediaType("application/octet-stream"))
 				.body(new InputStreamResource(new ByteArrayInputStream(pdfContent)));
 	}
+	
+	@ApiOperation(value = "Genera el xml autorizado, poteriormente se almacena en posgrest")
+	@GetMapping(value = "/factura-guardar")
+	public String almacenarRideFactura() {
+	    String clave  = null ;
+		try {
+			List<Doc> bills =saveBill.getBillStatusFalse();
+			for (Doc billRes :bills) {
+				clave = billRes.getKeyBill();
+			
+			RespuestaComprobanteDTO respuesta = sriBO.autorizarComprobante(clave, wsdlAutorizacion);
+				Optional<AutorizacionDTO> autorizacion = respuesta.getAutorizaciones().stream().findFirst();
+				if (autorizacion.isPresent()) {
+					billRes.setXmlBill(autorizacion.get().getComprobante());
+					billRes.setStatusBill(true);
+					billRes.setIdBill(billRes.getIdBill());
+					saveBill.updateBillXml(billRes);
+				} else {
+					throw new ResourceNotFoundException(
+							String.format("No se pudo encontrar el comprobante de autorización [%S]."));
+				}
+				
+			}
+			
+			
+			
+		} catch (IOException e) {
+			logger.error("generarRetencion", e);
+			throw new InternalServerException(e.getMessage());
+		}
+			
+		
+		return clave;
+	}
+	
 
 }

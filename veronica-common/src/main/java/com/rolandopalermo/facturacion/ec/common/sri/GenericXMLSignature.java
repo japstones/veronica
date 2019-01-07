@@ -142,10 +142,8 @@ public abstract class GenericXMLSignature {
 	 * Escribe el documento a un fichero.
 	 * </p>
 	 * 
-	 * @param document
-	 *            El documento a imprmir
-	 * @param pathfile
-	 *            El path del fichero donde se quiere escribir.
+	 * @param document El documento a imprmir
+	 * @param pathfile El path del fichero donde se quiere escribir.
 	 */
 	private void saveDocumentToFile(Document document, String pathfile) throws VeronicaException {
 		try {
@@ -166,10 +164,8 @@ public abstract class GenericXMLSignature {
 	 * la firma.
 	 * </p>
 	 * 
-	 * @param document
-	 *            El documento a imprmir
-	 * @param pathfile
-	 *            El path del fichero donde se quiere escribir.
+	 * @param document El documento a imprmir
+	 * @param pathfile El path del fichero donde se quiere escribir.
 	 */
 	@SuppressWarnings("unused")
 	private void saveDocumentToFileUnsafeMode(Document document, String pathfile) throws Exception {
@@ -185,8 +181,7 @@ public abstract class GenericXMLSignature {
 	 * pasado como parámetro
 	 * </p>
 	 * 
-	 * @param resource
-	 *            El recurso que se desea obtener
+	 * @param resource El recurso que se desea obtener
 	 * @return El <code>Document</code> asociado al <code>resource</code>
 	 */
 	protected Document getDocument(String resource) throws VeronicaException {
@@ -208,8 +203,7 @@ public abstract class GenericXMLSignature {
 	 * </p>
 	 * como un <code>String</code>
 	 * 
-	 * @param resource
-	 *            El recurso que se desea obtener
+	 * @param resource El recurso que se desea obtener
 	 * @return El contenido del documento XML como un <code>String</code>
 	 */
 	protected String getDocumentAsString(String resource) throws Exception {
@@ -249,8 +243,7 @@ public abstract class GenericXMLSignature {
 	 * Recupera el primero de los certificados del almacén.
 	 * </p>
 	 * 
-	 * @param storeManager
-	 *            Interfaz de acceso al almacén
+	 * @param storeManager Interfaz de acceso al almacén
 	 * @return Primer certificado disponible en el almacén
 	 */
 	private X509Certificate getFirstCertificate(final IPKStoreManager storeManager) throws VeronicaException {
@@ -262,7 +255,7 @@ public abstract class GenericXMLSignature {
 			}
 			X509Certificate certificate = certs.get(0);
 			return certificate;
-		}catch (CertStoreException ex) {
+		} catch (CertStoreException ex) {
 			throw new VeronicaException(ex);
 		}
 	}

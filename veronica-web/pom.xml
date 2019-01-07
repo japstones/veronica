@@ -60,6 +60,11 @@
 			<artifactId>veronica-ride</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.rolandopalermo.facturacion.ec</groupId>
+			<artifactId>veronica-persistence</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
