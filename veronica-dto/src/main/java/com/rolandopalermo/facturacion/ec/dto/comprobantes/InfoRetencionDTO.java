@@ -1,6 +1,6 @@
 package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 
-import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;

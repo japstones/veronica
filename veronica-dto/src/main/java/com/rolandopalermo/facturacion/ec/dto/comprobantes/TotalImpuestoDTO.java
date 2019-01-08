@@ -2,7 +2,7 @@ package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;

@@ -3,7 +3,7 @@ package com.rolandopalermo.facturacion.ec.dto.comprobantes;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
-import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Getter
 @Setter
