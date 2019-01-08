@@ -1,20 +1,18 @@
 package com.rolandopalermo.facturacion.ec.bo;
 
-import java.io.IOException;
-
-import javax.xml.bind.JAXBException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.rolandopalermo.facturacion.ec.common.exception.VeronicaException;
 import com.rolandopalermo.facturacion.ec.common.util.FileUtils;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.FacturaDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.GuiaRemisionDTO;
 import com.rolandopalermo.facturacion.ec.dto.comprobantes.RetencionDTO;
-import com.rolandopalermo.facturacion.ec.mapper.FacturaMapper;
-import com.rolandopalermo.facturacion.ec.mapper.GuiaRemisionMapper;
-import com.rolandopalermo.facturacion.ec.mapper.RetencionMapper;
+import com.rolandopalermo.facturacion.ec.mapper.factura.FacturaMapper;
+import com.rolandopalermo.facturacion.ec.mapper.guiaremision.GuiaRemisionMapper;
+import com.rolandopalermo.facturacion.ec.mapper.retencion.RetencionMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 
 @Service
 public class GeneradorBO {
@@ -27,14 +25,15 @@ public class GeneradorBO {
     private GuiaRemisionMapper guiaRemisionMapper;
 
     public byte[] generarXMLFactura(FacturaDTO facturaRequestDTO) throws VeronicaException, IOException, JAXBException {
-        return FileUtils.convertirObjAXML(facturaMapper.toModel(facturaRequestDTO));
+        return FileUtils.convertirObjAXML(facturaMapper.convert(facturaRequestDTO));
     }
 
     public byte[] generarXMLRetencion(RetencionDTO retencionDTO) throws VeronicaException, IOException, JAXBException {
-        return FileUtils.convertirObjAXML(retencionMapper.toModel(retencionDTO));
+        return FileUtils.convertirObjAXML(retencionMapper.convert(retencionDTO));
     }
+
     public byte[] generarGuiaXMLRemison(GuiaRemisionDTO guiaRemisionDTO) throws VeronicaException, IOException, JAXBException {
-        return FileUtils.convertirObjAXML(guiaRemisionMapper.toModel(guiaRemisionDTO));
+        return FileUtils.convertirObjAXML(guiaRemisionMapper.convert(guiaRemisionDTO));
     }
 
 }

@@ -7,6 +7,9 @@ import java.util.UUID;
 
 import javax.xml.bind.JAXBException;
 
+import com.rolandopalermo.facturacion.ec.mapper.factura.FacturaMapper;
+import com.rolandopalermo.facturacion.ec.mapper.guiaremision.GuiaRemisionMapper;
+import com.rolandopalermo.facturacion.ec.mapper.retencion.RetencionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +22,8 @@ import com.rolandopalermo.facturacion.ec.dto.comprobantes.RetencionDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.GenericComprobanteRequestDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaComprobanteDTO;
 import com.rolandopalermo.facturacion.ec.dto.rest.RespuestaSolicitudDTO;
-import com.rolandopalermo.facturacion.ec.mapper.FacturaMapper;
-import com.rolandopalermo.facturacion.ec.mapper.GuiaRemisionMapper;
 import com.rolandopalermo.facturacion.ec.mapper.RespuestaComprobanteMapper;
 import com.rolandopalermo.facturacion.ec.mapper.RespuestaSolicitudMapper;
-import com.rolandopalermo.facturacion.ec.mapper.RetencionMapper;
 import com.rolandopalermo.facturacion.ec.modelo.factura.Factura;
 import com.rolandopalermo.facturacion.ec.modelo.guia.GuiaRemision;
 import com.rolandopalermo.facturacion.ec.modelo.retencion.ComprobanteRetencion;
@@ -54,17 +54,17 @@ public class SriBO {
         String claveAcceso = "";
         // Actividad 2.- Ejecutar Marshalling
         if(comprobanteDTO.getComprobanteAsObj() instanceof FacturaDTO) {
-            Factura factura = facturaMapper.toModel((FacturaDTO) comprobanteDTO.getComprobanteAsObj());
+            Factura factura = facturaMapper.convert((FacturaDTO) comprobanteDTO.getComprobanteAsObj());
             claveAcceso = factura.getInfoTributaria().getClaveAcceso();
             JaxbUtils.marshall(factura, rutaArchivoXML);
         } else if(comprobanteDTO.getComprobanteAsObj() instanceof RetencionDTO) {
-            ComprobanteRetencion retencion = retencionMapper.toModel((RetencionDTO) comprobanteDTO.getComprobanteAsObj());
+            ComprobanteRetencion retencion = retencionMapper.convert((RetencionDTO) comprobanteDTO.getComprobanteAsObj());
             claveAcceso = retencion.getInfoTributaria().getClaveAcceso();
             JaxbUtils.marshall(retencion, rutaArchivoXML);
             
             
         }else if(comprobanteDTO.getComprobanteAsObj() instanceof GuiaRemisionDTO) {
-            GuiaRemision guiaRemision = guiaRemisionMapper.toModel((GuiaRemisionDTO) comprobanteDTO.getComprobanteAsObj());
+            GuiaRemision guiaRemision = guiaRemisionMapper.convert((GuiaRemisionDTO) comprobanteDTO.getComprobanteAsObj());
             claveAcceso = guiaRemision.getInfoTributaria().getClaveAcceso();
             JaxbUtils.marshall(guiaRemision, rutaArchivoXML);
         }
